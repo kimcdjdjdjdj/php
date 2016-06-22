@@ -56,7 +56,7 @@ a:hover {color:blue;}
 	?> 
 </table>
 
-<a class="w_btn" href=>글쓰기</a>
+<a class="w_btn" href="write_db_post">글쓰기</a>
 
 </div>
 
