@@ -33,14 +33,15 @@ a:hover {color:blue;}
 
 <table>
 <tr>
-<th class="num">번호</th><th>제목</th><th class="writer">글쓴이</th><th class="date">수정일</th>
+<th class="num">글번호</th><th>제목</th><th class="writer">글쓴이</th><th class="date">수정일</th>
 </tr>
 	<?php		
-		$hostname = 'localhost';
-		$username = 'root';
-		$password = 'cks2ek';
+		$hostname = 'kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com';
+		$username = 'kimjongchan';
+		$password = 'password';
 		$dbname = 'kimjongchan';
 		$conn = mysqli_connect($hostname,$username, $password, $dbname);
+		mysqli_query($conn, "SET NAMES 'utf8'");
 		if (!$conn) {
 		die('Mysql connection failed: '.mysqli_connect_error());
 		} 	

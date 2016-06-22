@@ -16,11 +16,12 @@
 
 <div class="wrap">
 	<?php			
-		$hostname = 'localhost';
-		$username = 'root';
-		$password = 'cks2ek';
+		$hostname = 'kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com';
+		$username = 'kimjongchan';
+		$password = 'password';
 		$dbname = 'kimjongchan';
 		$conn = mysqli_connect($hostname,$username, $password, $dbname);				
+		mysqli_query($conn, "SET NAMES 'utf8'");
 		
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
 			$title = $_POST['title'];

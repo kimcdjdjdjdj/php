@@ -27,8 +27,8 @@ input {padding:7px;}
 	<form action = "write_processes_db.php" method = "post">		
 		
 			<tr>
-				<th>제목</th>
-				<td><input type="text" name="title"></td>
+			<th>제목</th>
+			<td><input type="text" name="title"></td>
 			</tr>
 			<tr>
 			<th>글쓴이</th>

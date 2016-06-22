@@ -4,8 +4,8 @@
 <html>
 <style type="text/css">
 
-.wrap {margin:0 auto; width:50%; margin-top:50px;}
-.list {float:right;}
+.wrap {margin:0 auto; width:70%; margin-top:50px;}
+.list {float:right; margin-right:130px;}
 table {width:100%; border:1px solid #FFFFFF;
 	border-collapse:collapse;margin-top:50px;}
 td, th {border-bottom:1px solid #000; padding:20px;
