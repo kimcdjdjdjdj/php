@@ -14,7 +14,7 @@ td, th {border:1px solid #000000; padding:10px;
 	text-align:center;}
 .w_btn {float:right; text-decoration:none; padding:5px 20px;
 	margin-top:10px; background:#0099ff; color:#000;}
-.bo {margin:0 auto; width:70%; background:#ADFF2F}
+.bo {margin:0 auto; width:70%;}
 #name {text-align:center;}
 a {text-decoration:none;}
 a:link {color:red;}

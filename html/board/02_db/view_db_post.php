@@ -13,7 +13,7 @@ th {background:#0099ff;}
 td, th {border:1px solid #000000; padding:10px;
 	text-align:center;}
 #name {text-align:center;}
-.bo {margin:0 auto; width:70%; background:#ADFF2F}
+.bo {margin:0 auto; width:70%;}
 a:link {color:red;}
 a:visited {color:red;}
 a:hover {color:blue;}

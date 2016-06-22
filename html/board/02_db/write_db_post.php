@@ -13,7 +13,7 @@ input, textarea {border:1px solid #000000;}
 input {padding:7px;}
 .submit_btn {float:right; margin-top:15px; background:#0099ff;
 	color:#000;}
-.bo {margin:0 auto; width:70%; background:#ADFF2F}
+.bo {margin:0 auto; width:70%;}
 
 </style>
 

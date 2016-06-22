@@ -6,11 +6,11 @@
 
 .wrap {margin:0 auto; width:50%; margin-top:50px;}
 .list {float:right;}
-table {width:100%; border:1px solid #ADFF2F;
+table {width:100%; border:1px solid #FFFFFF;
 	border-collapse:collapse;margin-top:50px;}
 td, th {border-bottom:1px solid #000; padding:20px;
 	text-align:center;}
-.bo {margin:0 auto; width:70%; background:#ADFF2F}
+.bo {margin:0 auto; width:70%;}
 a {text-decoration:none;}
 a:link {color:red;}
 a:visited {color:red;}

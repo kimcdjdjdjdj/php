@@ -8,7 +8,7 @@
 .wrap {margin:0 auto; width:20%; margin-top:350px;}
 .btn {float:right; text-decoration:none; padding:5px 20px;
 	margin-top:10px; background:#0099ff; color:#000;}
-.bo {margin:0 auto; width:70%; background:#ADFF2F}
+.bo {margin:0 auto; width:70%;}
 </style>
 
 
