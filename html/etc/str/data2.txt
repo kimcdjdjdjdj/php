@@ -1,0 +1,5 @@
+student	2
+boy	3
+girl	5
+dest	10
+php	55
