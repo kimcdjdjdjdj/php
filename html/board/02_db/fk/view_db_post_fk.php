@@ -65,7 +65,7 @@ a:hover {color:blue;}
 				echo '</tr>';
 				echo '</table>';
 				echo '<div style="margin:0 auto;width:0%;">';
-				echo '<form action = "index_db.php" method = "get">';
+				echo '<form action = "index_db_fk.php" method = "get">';
 				echo '<input style="margin-top:15px;background:#AFEEEE;color:#000;" type="submit" value="목록">';
 				echo '</form>';
 				echo '</div>';

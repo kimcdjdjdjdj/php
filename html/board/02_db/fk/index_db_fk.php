@@ -56,7 +56,7 @@ a:hover {color:blue;}
 			if ($row['board_id'] === '1') {
 				echo "<tr>";
 				echo "<td>".$row['post_id']."</td>";
-				printf ("<td><a href=\"view_db_post.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
+				printf ("<td><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
 				echo "<td>".$row['writer']."</td>";
 				echo "<td>".$row['last_update']."</td>";
 				echo "</tr>";
