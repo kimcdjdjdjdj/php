@@ -44,13 +44,17 @@ echo 'PHP 뒷부분<br>';
 <th>과제명</th><th>단계</th><th>주제</th>
 </tr>
 <tr>
-<td rowspan="2">게시판</td>
+<td rowspan="3">게시판</td>
 <td>1</td>
 <td><a href="board/01_file/index.php">파일</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td><a href="board/02_db/index_db.php">db</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="board/02_db/fk/index_db_fk.php">db_fk</a></td>
 </tr>
 <tr>
 <td rowspan="1">사전 검색</td>

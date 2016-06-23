@@ -24,24 +24,29 @@ td, th {border:1px solid #000000; padding:10px;}
 
 <table>
 <h1>나의 게시판</h1>
+<?php
+	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+		$board = $_GET['board'];
+	}
 	
-	<form action = "write_processes_db.php" method = "post">		
-		
-			<tr>
-			<th>제목</th>
-			<td><input class="text" type="text" name="title"></td>
-			</tr>
-			<tr>
-			<th>글쓴이</th>
-			<td><input class="text" type="text" name="writer"></td>
-			</tr>
-			<tr>
-			<th>내용</th>
-			<td><textarea class="text" type="text" name="comment" rows="10" cols="100%"></textarea></td>
-			</tr>	
-			</table>
-		<input class="submit_btn" type="submit" value="제출">		
-	</form>
+	echo '<form action = "write_processes_db_fk.php" method = "post">';
+	echo '<tr>';
+	echo '<th>제목</th>';
+	echo '<td><input class="text" type="text" name="title"></td>';
+	echo '</tr>';
+	echo '<tr>';
+	echo '<th>글쓴이</th>';
+	echo '<td><input class="text" type="text" name="writer"></td>';
+	echo '</tr>';
+	echo '<tr>';
+	echo '<th>내용</th>';
+	echo '<td><textarea class="text" type="text" name="comment" rows="10" cols="100%"></textarea></td>';
+	echo '</tr>';
+	echo '</table>';
+	echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
+	echo '<input class="submit_btn" type="submit" value="제출">';	
+	echo '</form>';
+?>	
 	<form action="index_db.php" method="get">
 		<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE;
 	color:#000;" type="submit" value="목록">
