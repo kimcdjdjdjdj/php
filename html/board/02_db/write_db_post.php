@@ -5,13 +5,14 @@
 <style type="text/css">
 
 .wrap {margin:0 auto; width:50%; margin-top:50px;}
-table {width:100%; border:1px solid #0099ff;
+table {width:100%; border:1px solid #AFEEEE;
 	border-collapse:collapse;}
-th {background:#0099ff; width:20%;}
+th {background:#AFEEEE; width:20%;}
+td {background:#E0FFFF;}
 td, th {border:1px solid #000000; padding:10px;}
 input, textarea {border:1px solid #000000;}
 input {padding:7px;}
-.submit_btn {float:right; margin-top:15px; background:#0099ff;
+.submit_btn {float:right; margin-top:15px; background:#AFEEEE;
 	color:#000;}
 .bo {margin:0 auto; width:70%;}
 

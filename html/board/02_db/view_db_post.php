@@ -8,7 +8,8 @@
 .wrap {margin:0 auto; width:50%; margin-top:50px;}
 table {width:100%; border:1px solid #000000;
 	border-collapse:collapse;margin-top:100px;}
-th {background:#0099ff;}
+th {background:#AFEEEE;}
+td {background:#E0FFFF;}
 .num {width:15%;}
 .date {width:20%;}
 .writer {width:15%;}
@@ -65,7 +66,7 @@ a:hover {color:blue;}
 				echo '</table>';
 				echo '<div style="margin:0 auto;width:0%;">';
 				echo '<form action = "index_db.php" method = "get">';
-				echo '<input style="margin-top:15px;background:#0099ff;color:#000;" type="submit" value="목록">';
+				echo '<input style="margin-top:15px;background:#AFEEEE;color:#000;" type="submit" value="목록">';
 				echo '</form>';
 				echo '</div>';
 			}

@@ -8,14 +8,15 @@
 .wrap {margin:0 auto; width:60%; margin-top:50px;}
 table {width:100%; border:1px solid #000000; 
 	border-collapse:collapse;margin-top:50px;}
-th {background:#0099ff;}
+th {background:#AFEEEE;}
+td {background:#E0FFFF;}
 .num {width:10%;}
 .date {width:20%;}
 .writer {width:15%;}
 td, th {border:1px solid #000000; padding:10px;
 	text-align:center;}
 .w_btn {float:right; text-decoration:none; padding:5px 20px;
-	margin-top:10px; background:#0099ff; color:#000;}
+	margin-top:10px; background:#AFEEEE; color:#000;}
 .bo {margin:0 auto; width:70%;}
 #name {text-align:center;}
 a {text-decoration:none;}
