@@ -25,6 +25,10 @@ a:visited {color:red;}
 a:hover {color:blue;}
 
 </style>
+<form action="../../../index.php" method="get">
+<input style="float:left; margin-top:15px; background:#AFEEEE;
+	color:#000;" type="submit" value="처음으로">
+</form>
 
 <body class="bo">
 
