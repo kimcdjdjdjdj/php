@@ -72,11 +72,11 @@
 				
 				echo "<tr>";
 				echo "<th>내용</th>";
-				echo "<td>".$row2['reply_comment']."</td>";
+				echo '<td style="width:39%">'.$row2['reply_comment']."</td>";
 				echo "<th>작성자</th>";
-				echo "<td>".$row2['reply_writer']."</td>";
+				echo '<td style="width:16%">'.$row2['reply_writer']."</td>";
 				echo "<th>수정일</th>";
-				echo "<td>".$row2['reply_last_update']."</td>";
+				echo '<td style="width:16%">'.$row2['reply_last_update']."</td>";
 				echo "</tr>";	
 				
 		}
