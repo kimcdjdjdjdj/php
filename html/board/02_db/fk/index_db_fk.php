@@ -30,12 +30,14 @@
 		$result = mysqli_query ($conn, $select_query);		
 		
 		while ($row = mysqli_fetch_assoc($result)) {
+				
 				echo "<tr>";
 				echo "<td class=\"td_index\">".$row['post_id']."</td>";
 				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
 				echo "<td class=\"td_index\">".$row['writer']."</td>";
 				echo "<td class=\"td_index\">".$row['last_update']."</td>";
-				echo "</tr>";			
+				echo "</tr>";	
+				
 		}
 	?> 
 </table>

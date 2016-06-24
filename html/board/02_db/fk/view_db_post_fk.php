@@ -48,9 +48,44 @@
 				echo '</form>';
 				echo '</div>';
 			}
-		}	
-	?>
+		}
+	
+
+	echo '<form action="reply_db_fk.php" method="post">';
+	echo '<table class="table_view">';
+	echo '<tr>';
+	echo '<th>댓글</th>';
+	echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
+	echo '<th>작성자</th>';
+	echo '<td><input type="text" name="re_writer"></td>';
+	echo '</tr>';
+	echo '</table>';
+	echo "<input type=\"hidden\" value=\"$view_number\" name=\"post_id\">";
+	echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="작성">';
+	echo '</form>';
+	
+	$select_query2 = "SELECT reply_comment, reply_writer, reply_last_update FROM kimjongchan.reply
+	WHERE post_id = $view_number"; 
+	$result2 = mysqli_query ($conn, $select_query2);
+	echo "<table class=\"table_re\">";
+	while ($row2 = mysqli_fetch_assoc($result2)) {
+				
+				echo "<tr>";
+				echo "<th>내용</th>";
+				echo "<td>".$row2['reply_comment']."</td>";
+				echo "<th>작성자</th>";
+				echo "<td>".$row2['reply_writer']."</td>";
+				echo "<th>수정일</th>";
+				echo "<td>".$row2['reply_last_update']."</td>";
+				echo "</tr>";	
+				
+		}
+	echo "</table>";	
+?>
+	
+
 </div>
+
 
 </body>	
 

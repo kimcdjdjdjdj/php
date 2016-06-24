@@ -32,7 +32,7 @@
 				echo '</form>';
 			} else {
 				$insert_query = sprintf ("INSERT INTO post (title, writer, comment, board_id) VALUES ('%s', '%s', '%s', %d)", $title, $writer, $comment, $board_id);
-				echo $insert_query;
+				
 				if (mysqli_query($conn, $insert_query) === false) {
 					echo mysqli_error($conn);				
 				} else {
