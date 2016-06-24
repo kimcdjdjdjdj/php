@@ -47,7 +47,7 @@ td, th {border:1px solid #000000; padding:10px;}
 	echo '<input class="submit_btn" type="submit" value="제출">';	
 	echo '</form>';
 ?>	
-	<form action="index_db.php" method="get">
+	<form action="index_db_fk.php" method="get">
 		<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE;
 	color:#000;" type="submit" value="목록">
 	</form>

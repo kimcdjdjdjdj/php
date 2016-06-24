@@ -9,7 +9,7 @@
 .btn {float:right; text-decoration:none; padding:5px 20px;
 	margin-top:10px; background:#AFEEEE; color:#000;}
 .bo {margin:0 auto; width:70%;}
-.submit_btn {float:right; margin-top:15px; margin-right:150px; background:#AFEEEE;
+.submit_btn {float:right; margin-top:15px; margin-right:135px; background:#AFEEEE;
 	color:#000;}
 	
 </style>
@@ -39,7 +39,7 @@
 				echo '</table>';
 				echo '<form action = "write_db_post_fk.php" method = "get">';
 				echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
-				echo '<input class="submit_btn" type="submit" value="제출">';
+				echo '<input class="submit_btn" type="submit" value="글쓰기로">';
 				echo '</form>';
 			} else {
 				$insert_query = sprintf ("INSERT INTO post (title, writer, comment, board_id) VALUES ('%s', '%s', '%s', %d)", $title, $writer, $comment, $board_id);
