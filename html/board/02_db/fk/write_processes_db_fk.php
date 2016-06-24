@@ -47,7 +47,7 @@
 				if (mysqli_query($conn, $insert_query) === false) {
 					echo mysqli_error($conn);				
 				} else {
-					header('location: index_db.php');
+					header('location: index_db_fk.php');
 				}
 			}
 		}	 

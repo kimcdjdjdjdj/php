@@ -5,7 +5,7 @@
 
 <style type="text/css">
 
-.wrap {margin:0 auto; width:60%; margin-top:50px; margin-bottom:100px;}
+.wrap {margin:0 auto; width:60%; margin-top:30px; margin-bottom:100px;}
 table {width:100%; border:1px solid #000000; 
 	border-collapse:collapse;margin-top:50px;}
 th {background:#AFEEEE;}
@@ -25,8 +25,9 @@ a:visited {color:red;}
 a:hover {color:blue;}
 
 </style>
+
 <form action="../../../index.php" method="get">
-<input style="float:left; margin-top:15px; background:#AFEEEE;
+<input style="margin-top:50px; margin-left:170px; background:#AFEEEE;
 	color:#000;" type="submit" value="처음으로">
 </form>
 
