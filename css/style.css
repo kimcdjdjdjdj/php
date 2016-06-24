@@ -1,0 +1,50 @@
+.wrap {margin:0 auto; width:60%; margin-top:30px; margin-bottom:100px;}
+.table_index {width:100%; border:1px solid #000000; 
+	border-collapse:collapse;margin-top:50px;}
+.th_idex {background:#AFEEEE; border:1px solid #000000; padding:10px;
+	text-align:center;}
+.td_index {background:#E0FFFF; border:1px solid #000000; padding:10px;
+	text-align:center;}
+.num {width:10%; background:#AFEEEE; border:1px solid #000000; padding:10px;
+	text-align:center;}
+.date_index {width:20%; background:#AFEEEE; border:1px solid #000000; padding:10px;
+	text-align:center;}
+.writer_index {width:15%; background:#AFEEEE; border:1px solid #000000; padding:10px;
+	text-align:center;}
+.w_btn {float:right; text-decoration:none; padding:5px 20px;
+	margin-top:10px; background:#AFEEEE; color:#000;}
+.bo {margin:0 auto; width:70%;}
+#name {text-align:center;}
+a {text-decoration:none;}
+a:link {color:red;}
+a:visited {color:red;}
+a:hover {color:blue;}
+
+.wrap_view {margin:0 auto; width:50%; margin-top:50px; }
+.table_view {width:100%; border:1px solid #000000;
+	border-collapse:collapse;margin-top:100px;}
+.num_view {width:15%;}
+.writer {width:15%;}
+.date {width:20%;}
+th {background:#AFEEEE; border:1px solid #000000; padding:10px;
+	text-align:center;}	
+.td_view {background:#E0FFFF; border:1px solid #000000; padding:10px;
+	text-align:center;}	
+
+
+.wrap_write {margin:0 auto; width:60%; margin-top:50px;}
+.table_write {width:100%; border:1px solid #AFEEEE;
+	border-collapse:collapse;}
+.th_write {background:#AFEEEE; width:20%; border:1px solid #000000; padding:10px;}
+.td_wirte {border:1px solid #000000; padding:10px;}
+.text {border:1px solid #000000;}
+.submit_btn {float:right; margin-top:15px; background:#AFEEEE; color:#000;}
+td {background:#E0FFFF; border:1px solid #000000; padding:10px;}
+.wrap_pro {margin:0 auto; width:20%; margin-top:350px;}
+.btn {float:right; text-decoration:none; padding:5px 20px;
+	margin-top:10px; background:#AFEEEE; color:#000;}
+.submit_btn_pro {float:right; margin-top:15px; margin-right:135px; background:#AFEEEE;
+	color:#000;}
+
+
+

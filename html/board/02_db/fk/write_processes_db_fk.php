@@ -3,21 +3,14 @@
 
 <html>
 
-<style type="text/css">
-
-.wrap {margin:0 auto; width:20%; margin-top:350px;}
-.btn {float:right; text-decoration:none; padding:5px 20px;
-	margin-top:10px; background:#AFEEEE; color:#000;}
-.bo {margin:0 auto; width:70%;}
-.submit_btn {float:right; margin-top:15px; margin-right:135px; background:#AFEEEE;
-	color:#000;}
-	
-</style>
+<head>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
 
 
 <body class="bo">
 
-<div class="wrap">
+<div class="wrap_pro">
 	<?php			
 		require_once '../../../../includes/mylib.php';
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
@@ -35,7 +28,7 @@
 				echo '</table>';
 				echo '<form action = "write_db_post_fk.php" method = "get">';
 				echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
-				echo '<input class="submit_btn" type="submit" value="글쓰기로">';
+				echo '<input class="submit_btn_pro" type="submit" value="글쓰기로">';
 				echo '</form>';
 			} else {
 				$insert_query = sprintf ("INSERT INTO post (title, writer, comment, board_id) VALUES ('%s', '%s', '%s', %d)", $title, $writer, $comment, $board_id);
