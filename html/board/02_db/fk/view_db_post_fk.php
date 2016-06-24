@@ -32,17 +32,10 @@ a:hover {color:blue;}
 			$view_number = $_GET['number'];
 		}
 			
-		$hostname = 'kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com';
-		$username = 'kimjongchan';
-		$password = 'password';
-		$dbname = 'kimjongchan';
-		$conn = mysqli_connect($hostname,$username, $password, $dbname);
-		mysqli_query($conn, "SET NAMES 'utf8'");
-		if (!$conn) {
-		die('Mysql connection failed: '.mysqli_connect_error());
-		} 	
+		require_once '../../../../includes/mylib.php';
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		
-		$select_query = 'SELECT post_id, title, writer, comment, last_update FROM kimjongchan.post;'; 
+		$select_query = 'SELECT post_id, title, writer, comment, last_update FROM kimjongchan.post'; 
 		$result = mysqli_query ($conn, $select_query);
 		
 		while ($row = mysqli_fetch_assoc($result)) {

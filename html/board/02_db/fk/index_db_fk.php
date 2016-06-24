@@ -42,32 +42,19 @@ a:hover {color:blue;}
 <th class="num">글번호</th><th>제목</th><th class="writer">글쓴이</th><th class="date">수정일</th>
 </tr>
 	<?php		
-		$hostname = 'kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com';
-		$username = 'kimjongchan';
-		$password = 'password';
-		$dbname = 'kimjongchan';
-		$conn = mysqli_connect($hostname,$username, $password, $dbname);
-		mysqli_query($conn, "SET NAMES 'utf8'");
-		if (!$conn) {
-		die('Mysql connection failed: '.mysqli_connect_error());
-		} 	
+		require_once '../../../../includes/mylib.php';
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
 		
-		$select_query = 'SELECT post_id, title, writer, last_update, board_id FROM kimjongchan.post;';
-			
-		$result = mysqli_query ($conn, $select_query);
-		
+		$select_query = 'SELECT post_id, title, writer, last_update, board_id FROM kimjongchan.post WHERE board_id = 1';
+		$result = mysqli_query ($conn, $select_query);		
 		
 		while ($row = mysqli_fetch_assoc($result)) {
-			if ($row['board_id'] === '1') {
 				echo "<tr>";
 				echo "<td>".$row['post_id']."</td>";
 				printf ("<td><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
 				echo "<td>".$row['writer']."</td>";
 				echo "<td>".$row['last_update']."</td>";
-				echo "</tr>";
-				
-			}
-			
+				echo "</tr>";			
 		}	
 			
 	?> 
@@ -93,18 +80,16 @@ a:hover {color:blue;}
 <th class="num">글번호</th><th>제목</th><th class="writer">글쓴이</th><th class="date">수정일</th>
 </tr>
 <?php
-	$select_query = 'SELECT post_id, title, writer, last_update, board_id FROM kimjongchan.post;';
+	$select_query = 'SELECT post_id, title, writer, last_update, board_id FROM kimjongchan.post WHERE board_id = 2';
 	$result = mysqli_query ($conn, $select_query);
 		
 	while ($row = mysqli_fetch_assoc($result)) {
-		if ($row['board_id'] === '2') {
 			echo "<tr>";
 			echo "<td>".$row['post_id']."</td>";
 			printf ("<td><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
 			echo "<td>".$row['writer']."</td>";
 			echo "<td>".$row['last_update']."</td>";
 			echo "</tr>";
-		}
 	}	
 ?>
 </table>

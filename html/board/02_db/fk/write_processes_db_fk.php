@@ -19,12 +19,8 @@
 
 <div class="wrap">
 	<?php			
-		$hostname = 'kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com';
-		$username = 'kimjongchan';
-		$password = 'password';
-		$dbname = 'kimjongchan';
-		$conn = mysqli_connect($hostname,$username, $password, $dbname);				
-		mysqli_query($conn, "SET NAMES 'utf8'");
+		require_once '../../../../includes/mylib.php';
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
 			$title = $_POST['title'];
