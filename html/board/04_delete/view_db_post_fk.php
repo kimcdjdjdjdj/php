@@ -17,7 +17,7 @@
 			$view_number = $_GET['number'];
 		}
 			
-		require_once '../../../../includes/mylib.php';
+		require_once '../../../includes/mylib.php';
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		
 		$select_query = 'SELECT post_id, title, writer, comment, last_update FROM kimjongchan.post'; 
@@ -25,11 +25,12 @@
 		
 		while ($row = mysqli_fetch_assoc($result)) {
 			if ($view_number === $row['post_id']) {
+				$time = convert_time_string ($row['last_update']);
 				$num = $row['post_id'];
 				$title = $row['title'];
 				$writer = $row['writer'];
 				$comment = $row['comment'];
-				$last_update = $row['last_update'];
+				$last_update = $time;
 				
 				echo '<table class="table_view">';
 				echo '<tr>';
@@ -49,7 +50,10 @@
 				echo "<input type=\"hidden\" value=\"$view_number\" name=\"number\">";
 				echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
 				echo '</form>';
-				
+				echo '<form action = "delete.php" method = "get">';
+				echo "<input type=\"hidden\" value=\"$view_number\" name=\"number\">";
+				echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
+				echo '</form>';
 			}
 		}
 	
@@ -72,14 +76,14 @@
 	$result2 = mysqli_query ($conn, $select_query2);
 	echo "<table class=\"table_re\">";
 	while ($row2 = mysqli_fetch_assoc($result2)) {
-				
+				$reply_time = convert_time_string ($row2['reply_last_update']);
 				echo "<tr>";
 				echo "<th>내용</th>";
 				echo '<td style="width:39%">'.$row2['reply_comment']."</td>";
 				echo "<th>작성자</th>";
 				echo '<td style="width:16%">'.$row2['reply_writer']."</td>";
 				echo "<th>수정일</th>";
-				echo '<td style="width:16%">'.$row2['reply_last_update']."</td>";
+				echo '<td style="width:16%">'.$reply_time."</td>";
 				echo "</tr>";	
 				
 		}
