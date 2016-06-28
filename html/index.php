@@ -6,6 +6,7 @@
 
 .wrap {margin:0 auto; width:70%; margin-top:50px;}
 .list {float:right; margin-right:130px;}
+.ex {float:left;}
 table {width:100%; border:1px solid #FFFFFF;
 	border-collapse:collapse;margin-top:50px;}
 td, th {border-bottom:1px solid #000; padding:20px;
@@ -38,6 +39,9 @@ echo date("l jS \of F Y h:i:s A")."<br>";
 <?php
 echo 'PHP 뒷부분<br>';
 ?>
+
+
+
 <div class="list">
 <table>
 <tr>
@@ -73,5 +77,16 @@ echo 'PHP 뒷부분<br>';
 </div>
 </table>
 </div>
+
+<div class="ex">
+<table>
+<tr>
+<th>연습</td><th>주제</td>
+</tr>
+<tr>
+<td>1</td><td><a href="exercise/test_rank/test.php">성적 입력</a></td>
+</tr>
+</div>
+
 </body>
 </html>
