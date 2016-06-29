@@ -19,9 +19,8 @@
 
 
 <?php
-	require_once '../../../includes/mylib.php';
-	$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
-	
+	require_once '../../../includes/post.php';
+
 	for ($id = 1; $id <= 2; $id += 1) {
 		if ($id === 1) {
 			echo '<h1 id="name">게시판1</h1>';
@@ -36,15 +35,14 @@
 	</tr>	
 EOD;
 	
-	$select_query = sprintf("SELECT post_id, title, writer, last_update, board_id FROM kimjongchan.post WHERE board_id = %d;", $id);
-	$result = mysqli_query ($conn, $select_query);
-		
-	while ($row = mysqli_fetch_assoc($result)) {
-		$time = convert_time_string ($row['last_update']);
-		echo "<tr>";
-		echo "<td class=\"td_index\">".$row['post_id']."</td>";
-		printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $row['post_id'], $row['title']);
-		echo "<td class=\"td_index\">".$row['writer']."</td>";
+	$posts = get_all_post ($id);
+	//print_r ($posts);
+	foreach ($posts as $key => $post) {
+				$time = convert_time_string ($post->getCreated());
+		echo "<tr>";							//여기부터 ㄱㄱ
+		echo "<td class=\"td_index\">".$post->getId()."</td>";
+		printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $post->getId(), $post->getTitle());
+		echo "<td class=\"td_index\">".$post->getWriter()."</td>";
 		echo "<td class=\"td_index\">".$time."</td>";
 		echo "</tr>";
 	}

@@ -48,7 +48,7 @@ echo 'PHP 뒷부분<br>';
 <th>과제명</th><th>단계</th><th>주제</th>
 </tr>
 <tr>
-<td rowspan="4">게시판</td>
+<td rowspan="5">게시판</td>
 <td>1</td>
 <td><a href="board/01_file/index.php">파일</a></td>
 </tr>
@@ -63,6 +63,10 @@ echo 'PHP 뒷부분<br>';
 <tr>
 <td>4</td>
 <td><a href="board/04_delete/index_db_fk.php">db_delete</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="board/05_class/index_db_fk.php">db_class</a></td>
 </tr>
 <tr>
 <td rowspan="1">사전 검색</td>

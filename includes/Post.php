@@ -12,11 +12,16 @@
 		return $post;
 	}
 	
-	function get_all_post () {
+	function get_all_post ($board_id) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$all_query = 'SELECT COUNT(*) AS num FROM kimjongchan.post';
-		$result = mysqli_query($conn, $all_query);
-		return mysqli_fetch_assoc($result)['num'];
+		$select_query = sprintf("SELECT post_id, title, writer, comment, last_update, board_id FROM kimjongchan.post WHERE board_id = %d;", $board_id);
+		$result = mysqli_query ($conn, $select_query);
+		$post = array();
+		while ($row = mysqli_fetch_assoc($result)) {
+			$post[] = new post ($row['post_id'], $row['title'], $row['writer'], $row['comment'], $row['last_update'], $row['board_id']);
+		}
+		mysqli_close($conn);
+		return $post;
 	}
 	
 	function insert_post ($post) {
@@ -38,6 +43,35 @@
 		$modify_query = sprintf ("UPDATE post SET title='%s', comment='%s' WHERE post_id=%d", $title, $comment, $id);
 		mysqli_query ($conn, $modify_query);
 		mysqli_close($conn);
+	}
+	
+	function reply_post ($reply) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$reply_query = sprintf ("INSERT INTO reply (reply_writer, reply_comment, post_id) VALUES ('%s', '%s', %d)", $reply->getReplyWriter(), $reply->getReplyComment(), $reply->getPostId());
+		mysqli_query($conn, $reply_query);
+		mysqli_close($conn);		
+	}
+	
+	function get_reply_from_id ($id) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$id_query = sprintf("SELECT * FROM kimjongchan.reply WHERE post_id=%d;", $id);
+		$result = mysqli_query ($conn, $id_query);
+		$row = mysqli_fetch_assoc ($result);
+		$reply = new reply ($row['reply_id'], $row['reply_writer'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
+		mysqli_close($conn);
+		return $reply;
+	}
+	
+	function get_all_reply ($post_id) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$reply_query = sprintf("SELECT * FROM kimjongchan.reply WHERE post_id = %d;", $post_id);
+		$result = mysqli_query ($conn, $reply_query);
+		$reply = array();
+		while ($row = mysqli_fetch_assoc($result)) {
+			$reply[] = new reply ($row['reply_id'], $row['reply_writer'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
+		}
+		mysqli_close($conn);
+		return $reply;
 	}
 	
 	
@@ -119,3 +153,33 @@
 			return $this->boardId;
 		}
 	}
+	
+	class reply {
+		function __construct($reply_id, $reply_writer, $reply_comment, $reply_last_update, $post_id) {
+			$this->replyId = $reply_id;
+			$this->replyWriter = $reply_writer;
+			$this->replyComment = $reply_comment;
+			$this->replyLastUpdate = $reply_last_update;
+			$this->postId = $post_id;
+		}
+		function getReplyId() {
+			return $this->replyId;
+		}
+		
+		function getReplyWriter() {
+			return $this->replyWriter;
+		}
+		
+		function getReplyComment() {
+			return $this->replyComment;
+		}
+		
+		function getReplyLastUpdate() {
+			return $this->replyLastUpdate;
+		}
+		
+		function getPostId() {
+			return $this->postId;
+		}
+	}
+	
