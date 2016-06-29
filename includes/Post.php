@@ -32,9 +32,17 @@
 	}
 	
 	function delete_post ($id) {
-		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$reply = sprintf("SELECT * FROM reply WHERE post_id=%d;", $id);
+		$result = mysqli_query ($conn, $reply);
+		while ($row = mysqli_fetch_assoc($result)){
+			if ($row['reply_id'] = true) {
+			$reply_all_delete = sprintf("DELETE FROM reply WHERE post_id =%d;", $id);
+			mysqli_query ($conn, $reply_all_delete);
+			}
+		}
 		$delete = sprintf("DELETE FROM post WHERE post_id =%d;", $id);
-		mysqli_query ($conn, $delete);
+		mysqli_query ($conn, $delete);		
 		mysqli_close($conn);
 	}
 	
@@ -54,7 +62,7 @@
 	
 	function get_reply_from_id ($id) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$id_query = sprintf("SELECT * FROM kimjongchan.reply WHERE post_id=%d;", $id);
+		$id_query = sprintf("SELECT * FROM kimjongchan.reply WHERE reply_id=%d;", $id);
 		$result = mysqli_query ($conn, $id_query);
 		$row = mysqli_fetch_assoc ($result);
 		$reply = new reply ($row['reply_id'], $row['reply_writer'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
@@ -74,6 +82,19 @@
 		return $reply;
 	}
 	
+	function modify_reply ($reply_id, $reply_comment) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$modify_query = sprintf ("UPDATE reply SET reply_comment='%s' WHERE reply_id=%d", $reply_comment, $reply_id);
+		mysqli_query ($conn, $modify_query);
+		mysqli_close($conn);
+	}
+	
+	function delete_reply ($reply_id) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
+		$delete = sprintf("DELETE FROM reply WHERE reply_id =%d;", $reply_id);
+		mysqli_query ($conn, $delete);		
+		mysqli_close($conn);
+	}
 	
 	
 	

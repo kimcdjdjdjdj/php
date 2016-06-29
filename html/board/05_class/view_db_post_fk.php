@@ -16,7 +16,9 @@
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$id = $_GET['number'];
 	}			
-	
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$id = $_POST['number'];
+	}		
 	require_once '../../../includes/post.php';
 	$post = get_post_from_id($id);					
 	$time = convert_time_string ($post->getCreated());
@@ -50,19 +52,48 @@
 	echo '</form>';
 		
 	//댓글
-	echo '<form action="reply_db_fk.php" method="post">';
 	echo '<table class="table_view">';
-	echo '<tr>';
-	echo '<th>댓글</th>';
-	echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
-	echo '<th>작성자</th>';
-	echo '<td><input type="text" name="re_writer"></td>';
-	echo '</tr>';
-	echo '</table>';
-	echo "<input type=\"hidden\" value=\"$id\" name=\"post_id\">";
-	echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="작성">';
-	echo '</form>';	
-
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$reply_id = $_POST['reply_id'];
+		$post_id = $_POST['number'];
+		$reply = get_reply_from_id($reply_id);
+	
+		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
+		echo '<form action="reply_modify.php" method="POST">';
+		
+		echo '<tr>';
+		echo '<th>댓글</th>';
+		echo '<td ><textarea type="text" name="reply" rows="3" cols="45%">'.$reply->getReplyComment().'</textarea></td>';
+		echo '<th>작성자</th>';
+		echo '<td style="width:13%";>'.$reply->getReplyWriter().'</td>';
+		echo "<th>수정일</th>";
+		echo '<td style="width:16%";>'.$reply_time."</td>";
+		echo '</tr>';
+		echo '</table>';
+		echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
+		echo '<input type="hidden" value="'.$post_id.'" name="post_id">';
+		echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="수정">';
+		echo '</form>';
+		echo '<form action = "view_db_post_fk.php" method = "GET">';
+		echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+		echo '<input style="float:right; margin-top:3px; margin-right:6px; background:#AFEEEE;color:#000;" type="submit" value="취소">';
+		echo '</form>';
+		
+	} else {	
+		echo '<form action="reply_db_fk.php" method="POST">';		
+		echo '<tr>';
+		echo '<th>댓글</th>';
+		echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
+		echo '<th>작성자</th>';
+		echo '<td><input type="text" name="re_writer"></td>';
+		echo '</tr>';
+		echo '</table>';
+		echo "<input type=\"hidden\" value=\"$id\" name=\"post_id\">";
+		echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="작성">';
+		echo '</form>';	
+	}
+	
+	
 	$replys = get_all_reply($id);
 	//print_r ($replys);
 	echo '<table class="table_re">';
@@ -70,12 +101,26 @@
 		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
 		echo "<tr>";
 		echo "<th>내용</th>";
-		echo '<td style="width:39%">'.$reply->getReplyComment()."</td>";
+		echo '<td style="width:39%";>'.$reply->getReplyComment()."</td>";
 		echo "<th>작성자</th>";
-		echo '<td style="width:16%">'.$reply->getReplyWriter()."</td>";
+		echo '<td style="width:16%";>'.$reply->getReplyWriter()."</td>";
 		echo "<th>수정일</th>";
-		echo '<td style="width:16%">'.$reply_time."</td>";
-		echo "</tr>";		
+		echo '<td style="width:16%";>'.$reply_time."</td>";
+		echo '<td>';
+		echo '<form action = "view_db_post_fk.php" method = "POST">';
+		echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
+		echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+		echo '<input style="margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
+		echo '</form>';
+		echo '<form action = "delete.php" method = "POST">';
+		echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
+		echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+		echo '<input style="margin-top:5px; margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
+		echo '</form>';
+		
+		echo '</td>';
+			
+		echo "</tr>";
 	}
 	echo "</table>";
 ?>

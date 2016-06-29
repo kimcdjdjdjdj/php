@@ -27,10 +27,11 @@
 			echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
 			echo '<input class="submit_btn_pro" type="submit" value="수정하기로">';
 			echo '</form>';
-		}		
-		modify_post($id, $title, $comment);		
+		} else {	
+			modify_post($id, $title, $comment);		
 		
-		header("location: view_db_post_fk.php?number=$id");
+			header("location: view_db_post_fk.php?number=$id");
+		}
 	}
 ?>
 </div>
