@@ -51,7 +51,7 @@
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
 	echo '</form>';
 		
-	//댓글
+	//댓글 
 	echo '<table class="table_view">';
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$reply_id = $_POST['reply_id'];
@@ -63,7 +63,7 @@
 		
 		echo '<tr>';
 		echo '<th>댓글</th>';
-		echo '<td ><textarea type="text" name="reply" rows="3" cols="45%">'.$reply->getReplyComment().'</textarea></td>';
+		echo '<td ><textarea type="text" name="reply" rows="3" cols="43%">'.$reply->getReplyComment().'</textarea></td>';
 		echo '<th>작성자</th>';
 		echo '<td style="width:13%";>'.$reply->getReplyWriter().'</td>';
 		echo "<th>수정일</th>";
