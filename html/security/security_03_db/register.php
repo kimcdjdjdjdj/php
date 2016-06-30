@@ -1,7 +1,7 @@
 <?php
 
 require_once 'session.php';
-require_once $_SERVER["DOCUMENT_ROOT"]."/../includes/mylib.php";
+require_once '../../../includes/post.php';
  
 if (isset($_POST['id'], $_POST['password'])) {
     $id = $_POST['id'];
@@ -17,13 +17,14 @@ if (isset($_POST['id'], $_POST['password'])) {
 	if (mysqli_num_rows($result) != 0) { // 이미 등록된 아이디
 		header('Location: error.php?error_code=4');
 	} else {
+		echo '4';
 		$stmt = mysqli_prepare($conn, "INSERT INTO kimjongchan.user_account VALUES (?, ?)");
 		echo mysqli_error($conn);
 		mysqli_stmt_bind_param($stmt, "ss", $id, password_hash($password, PASSWORD_DEFAULT));
 		mysqli_stmt_execute($stmt);
 		//header('Location: index.php');
 	}
-	echo '4';
+	echo '5';
 	mysqli_free_result($result);
 	mysqli_close($conn);
 } else {
