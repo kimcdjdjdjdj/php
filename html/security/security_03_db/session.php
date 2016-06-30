@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"]."/../includes/my/mylib.php";
-define("USER_ACCOUNTS_FILE_NAME", "user_accounts.txt");
+require_once $_SERVER["DOCUMENT_ROOT"]."/../includes/mylib.php";
+
 
 // 하나의 페이지에서 한 번만 호출되어야 한다.
 function start_session() {
@@ -49,10 +49,8 @@ function try_to_login($id, $password) {
 }
 
 function check_user_account($id, $password) {
-    $id = $_POST['id'];
-    $password = $_POST['password']; 
-	$conn = get_db_connection();
-	$stmt = mysqli_prepare($conn, "SELECT hash FROM user_account WHERE id = ?");
+    $conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+	$stmt = mysqli_prepare($conn, "SELECT hash FROM user_account WHERE user_id = ?");
 	mysqli_stmt_bind_param($stmt, "s", $id);
 	mysqli_stmt_execute($stmt);
 	$result = mysqli_stmt_get_result($stmt);
