@@ -2,9 +2,10 @@
 	require_once '../../../includes/post.php';
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-		$id = $_GET['number'];		
-		delete_post ($id);	
-		header('location: index_db_fk.php');
+		$id = $_GET['number'];
+		$board_id = $_GET['id'];
+		delete_post ($id);
+		header("location: index_db_fk.php?id=$board_id");
 	}	
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {

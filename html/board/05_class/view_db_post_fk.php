@@ -26,6 +26,7 @@
 	$title = $post->getTitle();
 	$writer = $post->getWriter();
 	$comment = $post->getComment();
+	$board_id = $post->getBoardId();
 	$last_update = $time;
 	
 	echo '<table class="table_view">';
@@ -40,14 +41,17 @@
 	echo '</tr>';
 	echo '</table>';
 	echo '<form action = "index_db_fk.php" method = "get">';
+	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; background:#AFEEEE;color:#000;" type="submit" value="목록">';
 	echo '</form>';
 	echo '<form action = "modify.php" method = "get">';
 	echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
+	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
 	echo '</form>';
 	echo '<form action = "delete.php" method = "get">';
 	echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
+	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
 	echo '</form>';
 		

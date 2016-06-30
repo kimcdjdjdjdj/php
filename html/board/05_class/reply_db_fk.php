@@ -34,6 +34,8 @@
 			header("location: view_db_post_fk.php?number=$post_id");
 		}
 	}	
+	echo get_paging(1);
+	
 ?>
 </div>
 

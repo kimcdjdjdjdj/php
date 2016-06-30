@@ -66,7 +66,7 @@ echo 'PHP 뒷부분<br>';
 </tr>
 <tr>
 <td>5</td>
-<td><a href="board/05_class/index_db_fk.php">db_class</a></td>
+<td><a href="board/05_class/board_number.php">db_class</a></td>
 </tr>
 <tr>
 <td rowspan="1">사전 검색</td>
@@ -74,9 +74,15 @@ echo 'PHP 뒷부분<br>';
 <td><a href="dictionary/01_file/search.php">검색</a></td>
 </tr>
 <tr>
-<td rowspan="1">보안</td>
+<td rowspan="3">보안</td>
 <td>1</td>
-<td><a href="security/security_01_session/index.php">검색</a></td>
+<td><a href="security/security_01_session/index.php">session</a></td>
+</tr>
+<td>2</td>
+<td><a href="security/security_02_hashing/index.php">hashing</a></td>
+</tr>
+<td>3</td>
+<td><a href="security/security_03_db/index.php">db</a></td>
 </tr>
 </div>
 </table>

@@ -32,7 +32,7 @@
 		} else {
 			$post = new post (0, $title, $writer, $comment, 0, $board_id);				
 			insert_post($post);				
-			header('location: index_db_fk.php');
+			header("location: index_db_fk.php?id=$board_id");
 		}
 	}									
 ?>

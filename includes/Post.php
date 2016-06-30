@@ -204,3 +204,78 @@
 		}
 	}
 	
+	function get_paging_limit ($board_id, $page) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		
+		$list = 5;
+		$s_point = ($page - 1) * $list;
+		
+		$limit_query = sprintf("SELECT * FROM post WHERE board_id=%d ORDER BY post_id DESC LIMIT %d, %d", $board_id, $s_point, $list);
+		$real_data = mysqli_query ($conn, $limit_query);
+		while ($row = mysqli_fetch_assoc($real_data)) {
+			$post[] = new post ($row['post_id'], $row['title'], $row['writer'], $row['comment'], $row['last_update'], $row['board_id']);
+		}
+		mysqli_close($conn);
+		return $post;		
+	}
+	
+	function get_paging ($board_id, $page) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$total_post = sprintf ("SELECT COUNT(*) AS num FROM post WHERE board_id=%d;", $board_id);
+		$result = mysqli_query($conn, $total_post);
+		$row = mysqli_fetch_assoc($result);
+		$num = $row['num']; //총 게시물
+		$list = 5; // 페이지당 출력 게시물
+		$block = 5; //블록당 페이지 수
+		$page_num = ceil ($num/$list); //총 페이지
+		$block_num = ceil ($page_num/$block); //총 블럭
+		$now_block = ceil ($page/$block); //현재 블럭
+		$start_page = (($now_block - 1) * $block) + 1; //블럭의 첫번째 번호
+		if ($start_page <= 1){
+			$start_page = 1;
+		}
+		$end_page = $now_block * $block;
+		if ($page_num <= $end_page){
+			$end_page = $page_num;
+		}
+		
+		
+		if($page <=1){
+			echo '<처음>';
+		}else {
+				printf ("<a href=\"index_db_fk.php?page=1&id=%d\"><처음></a>", $board_id);
+			}
+		if ($now_block <= 1){
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%d&id=%d\"><<<</a>", $start_page - 1, $board_id);
+		}
+		if ($page <= 1){
+			
+		} else {
+		printf ("<a href=\"index_db_fk.php?page=%d&id=%d\"><이전></a>", $page - 1, $board_id);
+		}
+		for ($p = $start_page; $p <= $end_page; $p +=1){
+			if ($page == $p)
+				echo "[$p]";
+			else {
+				printf ("<a href=\"index_db_fk.php?page=%d&id=%d\">[%d]</a>", $p, $board_id, $p);
+			}	
+		}
+		if ($page >= $page_num) {
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%d&id=%d\"><다음></a>", $page + 1, $board_id);
+		}
+		if ($now_block >= $block_num){
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%d&id=%d\">>>></a>", $end_page + 1, $board_id);
+		}
+		if($page >= $page_num){
+			
+		}else {
+				printf ("<a href=\"index_db_fk.php?page=%d&id=%d\"><마지막></a>", $page_num, $board_id);
+			}
+		$s_point = ($page - 1) * $list;
+	}
