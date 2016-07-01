@@ -9,7 +9,7 @@
 
 <body class="bo">
 
-<div class="wrap_view">
+
 
 <h1 id="name">나의 게시판</h1>
 <?php		
@@ -19,12 +19,56 @@
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$id = $_POST['number'];
 	}		
+
+	require_once '../../../includes/session.php';
+	start_session();
+	if (check_login()){	
+?>			
+		<div class="wrap_view">
+		<table class="table_index">
+<?php			
+		echo '<tr><td>로그인 되었습니다.</td>';
+?>			
+		<td><form action="logout.php" method="get">
+<?php
+		echo "<input type=\"hidden\" value=\"$id\" name=\"post_id\">";
+?>			     
+		<input type="submit" value="로그아웃"></td>
+		</form></td>
+		</tr>
+		</table>
+		</div>
+<?php
+	} else {
+?>
+	<div class="wrap_view">
+	<form action="login.php" method="POST">
+	<table class="table_index"> 
+	<tr><td>ID</td><td><input type="text" name="name"></td>
+	<td>PASSWORD</td><td><input type="text" name="password"></td>
+<?php	
+	echo "<input type=\"hidden\" value=\"$id\" name=\"post_id\">";
+?>	
+	<td><input type="submit" value="로그인"></td>
+	</form>
+	<form action="register_page.php" method="GET">
+<?php	
+	echo "<input type=\"hidden\" value=\"$id\" name=\"post_id\">";
+?>	
+	 <td><input type="submit" value="회원가입"></td>
+	</form>
+	</tr>
+	</table>
+	</div>
+<?php
+	}
+	echo '<div class="wrap_view">';
 	require_once '../../../includes/post.php';
-	$post = get_post_from_id($id);					
+	$post = get_post_from_id($id);				
 	$time = convert_time_string ($post->getCreated());
 	$num = $post->getId();
 	$title = $post->getTitle();
-	$writer = $post->getWriter();
+	$user_name = get_user_name ($post->userId());	
 	$comment = $post->getComment();
 	$board_id = $post->getBoardId();
 	$last_update = $time;
@@ -34,22 +78,35 @@
 	echo '<th class="num_view">글번호</th><th>제목</th><th>글쓴이</th><th>수정일</th>';
 	echo '</tr>';
 	echo '<tr>';
-	echo '<td class="td_view">'.$num.'</td><td class="td_view">'.$title.'</td><td class="td_view" class="writer">'.$writer.'</td><td class="td_view" class="date">'.$last_update.'</td>';
+	echo '<td class="td_view">'.$num.'</td><td class="td_view">'.$title.'</td><td class="td_view" class="writer">'.$user_name.'</td><td class="td_view" class="date">'.$last_update.'</td>';
 	echo '</tr>';
 	echo '<tr>';
 	echo '<th>내용</th><td class="td_view" colspan="3">'.$comment.'</td>';
 	echo '</tr>';
 	echo '</table>';
 	echo '<form action = "index_db_fk.php" method = "get">';
+	if(isset ($_GET['user_name'])) {
+		$user = $_GET['user_name'];
+		echo "<input type=\"hidden\" value=\"$user\" name=\"name\">";
+	}	
 	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; background:#AFEEEE;color:#000;" type="submit" value="목록">';
 	echo '</form>';
 	echo '<form action = "modify.php" method = "get">';
+	if(isset ($_GET['user_name'])) {
+		$user = $_GET['user_name'];
+		echo "<input type=\"hidden\" value=\"$user\" name=\"name\">";
+	}
 	echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
 	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
 	echo '</form>';
 	echo '<form action = "delete.php" method = "get">';
+	if(isset ($_GET['user_name'])) {
+		$user = $_GET['user_name'];
+		echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
+		echo "<input type=\"hidden\" value=\"$user\" name=\"name\">";
+	}
 	echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
 	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';

@@ -7,18 +7,18 @@
 		$id_query = sprintf("SELECT * FROM kimjongchan.post WHERE post_id=%d;", $id);
 		$result = mysqli_query ($conn, $id_query);
 		$row = mysqli_fetch_assoc ($result);
-		$post = new post ($row['post_id'], $row['title'], $row['writer'], $row['comment'], $row['last_update'], $row['board_id']);
+		$post = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
 		mysqli_close($conn);
 		return $post;
 	}
 	
 	function get_all_post ($board_id) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$select_query = sprintf("SELECT post_id, title, writer, comment, last_update, board_id FROM kimjongchan.post WHERE board_id = %d;", $board_id);
+		$select_query = sprintf("SELECT post_id, title, user_id, comment, last_update, board_id FROM kimjongchan.post WHERE board_id = %d;", $board_id);
 		$result = mysqli_query ($conn, $select_query);
 		$post = array();
 		while ($row = mysqli_fetch_assoc($result)) {
-			$post[] = new post ($row['post_id'], $row['title'], $row['writer'], $row['comment'], $row['last_update'], $row['board_id']);
+			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
 		}
 		mysqli_close($conn);
 		return $post;
@@ -26,7 +26,7 @@
 	
 	function insert_post ($post) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$insert_query = sprintf ("INSERT INTO post (title, writer, comment, board_id) VALUES ('%s', '%s', '%s', %d)", $post->getTitle(), $post->getWriter(), $post->getComment(), $post->getBoardId());
+		$insert_query = sprintf ("INSERT INTO post (title, user_id, comment, board_id) VALUES ('%s', %d, '%s', %d)", $post->getTitle(), $post->userId(), $post->getComment(), $post->getBoardId());
 		mysqli_query($conn, $insert_query);
 		mysqli_close($conn);
 	}
@@ -141,10 +141,10 @@
 	}
 	
 	class Post {
-		function __construct($id, $title, $writer, $comment, $last_update, $board_id) {
+		function __construct($id, $title, $user_id, $comment, $last_update, $board_id) {
 			$this->id = $id;
 			$this->title = $title;
-			$this->writer = $writer;
+			$this->userid = $user_id;
 			$this->comment = $comment;
 			$this->created = $last_update;
 			$this->boardId = $board_id;
@@ -158,8 +158,8 @@
 			return $this->title;
 		}
 		
-		function getWriter() {
-			return $this->writer;
+		function userId() {
+			return $this->userid;
 		}
 		
 		function getComment() {
@@ -213,7 +213,7 @@
 		$limit_query = sprintf("SELECT * FROM post WHERE board_id=%d ORDER BY post_id DESC LIMIT %d, %d", $board_id, $s_point, $list);
 		$real_data = mysqli_query ($conn, $limit_query);
 		while ($row = mysqli_fetch_assoc($real_data)) {
-			$post[] = new post ($row['post_id'], $row['title'], $row['writer'], $row['comment'], $row['last_update'], $row['board_id']);
+			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
 		}
 		mysqli_close($conn);
 		return $post;		
@@ -278,4 +278,24 @@
 				printf ("<a href=\"index_db_fk.php?page=%d&id=%d\"><마지막></a>", $page_num, $board_id);
 			}
 		$s_point = ($page - 1) * $list;
+	}
+	
+	function get_user_id ($user_name) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$id_query = sprintf("SELECT user_id FROM kimjongchan.user_account WHERE user_name='%s';", $user_name);
+		$result = mysqli_query ($conn, $id_query);
+		$row = mysqli_fetch_assoc ($result);
+		$user_id = $row['user_id'];
+		mysqli_close($conn);
+		return $user_id;
+	}
+	
+	function get_user_name ($user_id) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		$id_query = sprintf("SELECT user_name FROM kimjongchan.user_account WHERE user_id=%d;", $user_id);
+		$result = mysqli_query ($conn, $id_query);
+		$row = mysqli_fetch_assoc ($result);
+		$user_name = $row['user_name'];
+		mysqli_close($conn);
+		return $user_name;
 	}

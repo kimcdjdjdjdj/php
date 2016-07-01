@@ -26,25 +26,26 @@ a:hover {color:blue;}
 <?php
 	require_once '../../../includes/session.php';
 	start_session();
-	if (check_login()){
-		if(isset ($_GET['id'])){
-			$id = $_GET['id'];
-			echo '<div class="login">';
-			echo '<table>';			
-			echo '<tr><td>'.$id.' 님 환영합니다.</td>';
-			echo '<td><form action="logout.php" method="get">
-			     <input type="submit" value="로그아웃"></td>
-			     </form></td>';
-			echo '</tr>';
-			echo '</table>';	
-			echo '</div>';
-		}
+	if (check_login()){			
+?>			
+		<div class="login">
+		<table>
+<?php			
+		echo '<tr><td>로그인 되었습니다.</td>';
+?>			
+		<td><form action="logout.php" method="get">
+		<input type="submit" value="로그아웃"></td>
+	    </form></td>
+		</tr>
+		</table>
+		</div>
+<?php		
 	} else {
 ?>
 	<div class="login">
 	<form action="login.php" method="POST">
 	<table>
-	<tr><td>ID : </td><td><input type="text" name="id"></td>
+	<tr><td>ID : </td><td><input type="text" name="name"></td>
 	<td>PASSWORD : </td><td><input type="text" name="password"></td>
 	<td><input type="submit" value="로그인"></td>
 	</form>
