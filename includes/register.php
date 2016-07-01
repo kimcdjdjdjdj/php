@@ -1,7 +1,7 @@
 <?php
 
 require_once 'session.php';
-require_once '../../../includes/post.php';
+require_once 'post.php';
  
 if (isset($_POST['id'], $_POST['password'])) {
     $id = $_POST['id'];

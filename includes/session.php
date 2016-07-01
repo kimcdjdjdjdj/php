@@ -1,5 +1,5 @@
 <?php
-require_once '../../../includes/post.php';
+require_once 'post.php';
 
 
 // 하나의 페이지에서 한 번만 호출되어야 한다.
