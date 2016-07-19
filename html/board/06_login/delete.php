@@ -29,8 +29,9 @@
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$reply_id = $_POST['reply_id'];
 			$post_id = $_POST['number'];
+			$user_name = $_POST['user_name'];
 			delete_reply ($reply_id);
-			header("location: view_db_post_fk.php?number=$post_id");
+			header("location: view_db_post_fk.php?number=$post_id&user_name=$user_name");
 		}
 	} else {
 ?>

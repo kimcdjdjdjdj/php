@@ -23,7 +23,7 @@
 		require_once '../../../includes/post.php';
 		$post = get_post_from_id($id);	
 		$title = $post->getTitle();
-		$user_name = get_user_name ($post->userId());
+		$user_name = get_user_name ($post->getUserId());
 		$comment = $post->getComment();	
 		
 		if ($user_name == $check_name) {

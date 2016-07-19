@@ -16,7 +16,7 @@
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$id = $_GET['number'];
 	}			
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (isset($_POST['number'])) {
 		$id = $_POST['number'];
 	}		
 
@@ -68,7 +68,7 @@
 	$time = convert_time_string ($post->getCreated());
 	$num = $post->getId();
 	$title = $post->getTitle();
-	$user_name = get_user_name ($post->userId());	
+	$user_name = get_user_name ($post->getUserId());	
 	$comment = $post->getComment();
 	$board_id = $post->getBoardId();
 	$last_update = $time;
@@ -114,33 +114,39 @@
 		
 	//댓글 
 	echo '<table class="table_view">';
-	if (check_login()) {
+	if (check_login()) {//수정댓글
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$reply_id = $_POST['reply_id'];
 			$post_id = $_POST['number'];
 			$reply = get_reply_from_id($reply_id);
-		
+			$user = $_POST['user_name'];
 			$reply_time = convert_time_string ($reply->getReplyLastUpdate());
+			
 			echo '<form action="reply_modify.php" method="POST">';
 			
 			echo '<tr>';
 			echo '<th>댓글</th>';
 			echo '<td ><textarea type="text" name="reply" rows="3" cols="43%">'.$reply->getReplyComment().'</textarea></td>';
 			echo '<th>작성자</th>';
-			echo '<td style="width:13%";>'.$reply->getReplyWriter().'</td>';
+			echo '<td style="width:13%";>'.$reply->getReplyUserID().'</td>';
 			echo "<th>수정일</th>";
 			echo '<td style="width:16%";>'.$reply_time."</td>";
 			echo '</tr>';
 			echo '</table>';
+			
+			echo "<input type=\"hidden\" value=\"$user\" name=\"name\">";
+			
 			echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
 			echo '<input type="hidden" value="'.$post_id.'" name="post_id">';
 			echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="수정">';
 			echo '</form>';
 			echo '<form action = "view_db_post_fk.php" method = "GET">';
 			echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+			echo "<input type=\"hidden\" value=\"$user\" name=\"user_name\">";
 			echo '<input style="float:right; margin-top:3px; margin-right:6px; background:#AFEEEE;color:#000;" type="submit" value="취소">';
-			echo '</form>';		
-		} else {	
+			echo '</form>';
+			
+		} else {//메인 댓글
 			if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 				$user = $_GET['user_name'];
 			}
@@ -157,7 +163,7 @@
 			echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="작성">';
 			echo '</form>';	
 		}
-	} else {
+	} else {//로그인 안되있을때
 		echo '<form action="reply_db_fk.php" method="POST">';		
 		echo '<tr>';
 		echo '<th>댓글</th>';
@@ -182,19 +188,25 @@
 		echo "<th>수정일</th>";
 		echo '<td style="width:16%";>'.$reply_time."</td>";
 		echo '<td>';
-		echo '<form action = "view_db_post_fk.php" method = "POST">';
-		echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
-		echo '<input type="hidden" value="'.$post->getId().'" name="number">';
-		echo '<input style="margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
-		echo '</form>';
-		echo '<form action = "delete.php" method = "POST">';
-		echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
-		echo '<input type="hidden" value="'.$post->getId().'" name="number">';
-		echo '<input style="margin-top:5px; margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
-		echo '</form>';
-		
-		echo '</td>';
+		if (isset ($_GET['user_name'])){
+			$user = $_GET['user_name'];
 			
+			if(get_user_name ($reply->getReplyUserID()) === $user){
+				echo '<form action = "view_db_post_fk.php" method = "POST">';
+				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
+				echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+				echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
+				echo '<input style="margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
+				echo '</form>';
+				echo '<form action = "delete.php" method = "POST">';
+				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
+				echo '<input type="hidden" value="'.$post->getId().'" name="number">';
+				echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
+				echo '<input style="margin-top:5px; margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
+				echo '</form>';		
+				echo '</td>';
+			}
+		}		
 		echo "</tr>";
 	}
 	echo "</table>";

@@ -99,7 +99,7 @@ EOD;
 		} else {
 			printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $post->getId(), $post->getTitle());
 		}	
-		echo "<td class=\"td_index\">".get_user_name($post->userId())."</td>";
+		echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
 		echo "<td class=\"td_index\">".$time."</td>";
 		echo "</tr>";		
 	}	

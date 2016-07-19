@@ -17,6 +17,7 @@
 		$title = $_POST['title'];		
 		$comment = $_POST['comment'];
 		$id = $_POST['number'];
+		$user_name = $_POST['user_name'];
 		if (($title && $comment) === false) {
 			echo '<table>';
 			echo '<tr>';
@@ -30,7 +31,7 @@
 		} else {	
 			modify_post($id, $title, $comment);		
 		
-			header("location: view_db_post_fk.php?number=$id");
+			header("location: view_db_post_fk.php?number=$id&user_name=$user_name");
 		}
 	}
 ?>

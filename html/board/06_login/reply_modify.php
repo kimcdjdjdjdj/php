@@ -12,11 +12,14 @@
 <div class="wrap_pro">
 <?php
 	require_once '../../../includes/post.php';
+	require_once '../../../includes/session.php';
+	start_session();
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
 		$reply_comment = $_POST['reply'];		
 		$reply_id = $_POST['reply_id'];
 		$post_id = $_POST['post_id'];
+		$user = $_POST['name'];
 		if ($reply_comment == false) {
 			echo '<table>';
 			echo '<tr>';
@@ -26,12 +29,13 @@
 			echo '<form action = "view_db_post_fk.php" method = "POST">';
 			echo '<input type="hidden" value="'.$reply_id.'" name="reply_id">';
 			echo '<input type="hidden" value="'.$post_id.'" name="number">';
+			echo '<input type="hidden" value="'.$user.'" name="name">';
 			echo '<input class="submit_btn_pro" type="submit" value="댓글 수정">';
 			echo '</form>';
 		} else {
 			modify_reply($reply_id, $reply_comment);
 		
-			header("location: view_db_post_fk.php?number=$post_id");
+			header("location: view_db_post_fk.php?number=$post_id&user_name=$user");
 		}
 	}	
 ?>
