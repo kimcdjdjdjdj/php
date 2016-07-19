@@ -26,7 +26,7 @@
 	
 	function insert_post ($post) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$insert_query = sprintf ("INSERT INTO post (title, user_id, comment, board_id) VALUES ('%s', %d, '%s', %d)", $post->getTitle(), $post->userId(), $post->getComment(), $post->getBoardId());
+		$insert_query = sprintf ("INSERT INTO post (title, user_id, comment, board_id) VALUES ('%s', %d, '%s', %d)", $post->getTitle(), $post->getUserId(), $post->getComment(), $post->getBoardId());
 		mysqli_query($conn, $insert_query);
 		mysqli_close($conn);
 	}

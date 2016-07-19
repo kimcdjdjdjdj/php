@@ -5,8 +5,9 @@
 	start_session();
 	try_to_logout();
 	destroy_session();
-
-	if (isset($_GET['board'])) {
+	if (isset($_GET['logout'])){
+		header("Location:../../../index.php");
+	} else if (isset($_GET['board'])) {
 		$board_id = $_GET['board'];
 		header("Location: index_db_fk.php?id=$board_id");
 	} else {
