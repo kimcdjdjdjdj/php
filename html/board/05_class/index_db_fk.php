@@ -53,7 +53,7 @@ EOD;
 		echo "<tr>";							//여기부터 ㄱㄱ
 		echo "<td class=\"td_index\">".$post->getId()."</td>";
 		printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $post->getId(), $post->getTitle());
-		echo "<td class=\"td_index\">".$post->getWriter()."</td>";
+		echo "<td class=\"td_index\">".$post->getUserId()."</td>";
 		echo "<td class=\"td_index\">".$time."</td>";
 		echo "</tr>";		
 	}	

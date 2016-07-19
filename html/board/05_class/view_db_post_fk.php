@@ -24,7 +24,7 @@
 	$time = convert_time_string ($post->getCreated());
 	$num = $post->getId();
 	$title = $post->getTitle();
-	$writer = $post->getWriter();
+	$writer = $post->getUserId();
 	$comment = $post->getComment();
 	$board_id = $post->getBoardId();
 	$last_update = $time;
@@ -69,7 +69,7 @@
 		echo '<th>댓글</th>';
 		echo '<td ><textarea type="text" name="reply" rows="3" cols="43%">'.$reply->getReplyComment().'</textarea></td>';
 		echo '<th>작성자</th>';
-		echo '<td style="width:13%";>'.$reply->getReplyWriter().'</td>';
+		echo '<td style="width:13%";>'.$reply->getReplyUserID().'</td>';
 		echo "<th>수정일</th>";
 		echo '<td style="width:16%";>'.$reply_time."</td>";
 		echo '</tr>';
@@ -107,7 +107,7 @@
 		echo "<th>내용</th>";
 		echo '<td style="width:39%";>'.$reply->getReplyComment()."</td>";
 		echo "<th>작성자</th>";
-		echo '<td style="width:16%";>'.$reply->getReplyWriter()."</td>";
+		echo '<td style="width:16%";>'.$reply->getReplyUserID()."</td>";
 		echo "<th>수정일</th>";
 		echo '<td style="width:16%";>'.$reply_time."</td>";
 		echo '<td>';

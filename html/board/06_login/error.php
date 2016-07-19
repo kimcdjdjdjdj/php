@@ -23,10 +23,13 @@
 			case "4":
 				echo "이미 사용중인 아이디 입니다<br>";
 				break;
+			case "5":
+				echo "수정 및 삭제 권한이 없습니다<br>";
+				break;
 			case "100":
 				echo "Debug<br>";
 				break;
-			default:
+			default:		
 				echo "기타 에러<br>";
 				break;			
 		}

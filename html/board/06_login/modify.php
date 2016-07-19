@@ -54,7 +54,7 @@
 			echo '</form>';	
 			echo '</div>';
 		} else {
-			header('Location: error.php?error_code=1');
+			header('Location: error.php?error_code=5');
 		}
 	} else {
 ?>

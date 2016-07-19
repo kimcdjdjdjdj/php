@@ -16,7 +16,7 @@
 	$post = get_post_from_id($id);	
 	
 	$title = $post->getTitle();
-	$writer = $post->getWriter();
+	$writer = $post->getUserId();
 	$comment = $post->getComment();				
 	echo '<h1 id="name">나의 게시판</h1>';
 	echo '<table class="table_write">';

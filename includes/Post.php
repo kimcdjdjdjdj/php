@@ -1,5 +1,5 @@
 <?php
-	require 'mylib.php';
+	require_once 'mylib.php';
 
 	
 	function get_post_from_id ($id) {
@@ -55,7 +55,7 @@
 	
 	function reply_post ($reply) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$reply_query = sprintf ("INSERT INTO reply (reply_writer, reply_comment, post_id) VALUES ('%s', '%s', %d)", $reply->getReplyWriter(), $reply->getReplyComment(), $reply->getPostId());
+		$reply_query = sprintf ("INSERT INTO reply (user_id, reply_comment, post_id) VALUES ('%s', '%s', %d)", $reply->getReplyUserID(), $reply->getReplyComment(), $reply->getPostId());
 		mysqli_query($conn, $reply_query);
 		mysqli_close($conn);		
 	}
@@ -65,7 +65,7 @@
 		$id_query = sprintf("SELECT * FROM kimjongchan.reply WHERE reply_id=%d;", $id);
 		$result = mysqli_query ($conn, $id_query);
 		$row = mysqli_fetch_assoc ($result);
-		$reply = new reply ($row['reply_id'], $row['reply_writer'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
+		$reply = new reply ($row['reply_id'], $row['user_id'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
 		mysqli_close($conn);
 		return $reply;
 	}
@@ -76,7 +76,7 @@
 		$result = mysqli_query ($conn, $reply_query);
 		$reply = array();
 		while ($row = mysqli_fetch_assoc($result)) {
-			$reply[] = new reply ($row['reply_id'], $row['reply_writer'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
+			$reply[] = new reply ($row['reply_id'], $row['user_id'], $row['reply_comment'], $row['reply_last_update'], $row['post_id']);
 		}
 		mysqli_close($conn);
 		return $reply;
@@ -158,7 +158,7 @@
 			return $this->title;
 		}
 		
-		function userId() {
+		function getUserId() {
 			return $this->userid;
 		}
 		
@@ -176,9 +176,9 @@
 	}
 	
 	class reply {
-		function __construct($reply_id, $reply_writer, $reply_comment, $reply_last_update, $post_id) {
+		function __construct($reply_id, $user_id, $reply_comment, $reply_last_update, $post_id) {
 			$this->replyId = $reply_id;
-			$this->replyWriter = $reply_writer;
+			$this->replyUserID = $user_id;
 			$this->replyComment = $reply_comment;
 			$this->replyLastUpdate = $reply_last_update;
 			$this->postId = $post_id;
@@ -187,8 +187,8 @@
 			return $this->replyId;
 		}
 		
-		function getReplyWriter() {
-			return $this->replyWriter;
+		function getReplyUserID() {
+			return $this->replyUserID;
 		}
 		
 		function getReplyComment() {

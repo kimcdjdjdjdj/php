@@ -100,6 +100,9 @@ echo 'PHP 뒷부분<br>';
 <tr>
 <td>1</td><td><a href="exercise/test_rank/test.php">성적 입력</a></td>
 </tr>
+<tr>
+<td>2</td><td><a href="javascript/lecture_6_06.php">javascript 6_06</a></td>
+</tr>
 </div>
 
 </body>
