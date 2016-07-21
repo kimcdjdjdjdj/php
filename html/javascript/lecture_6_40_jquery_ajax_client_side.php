@@ -19,7 +19,6 @@ function buttonClicked() {
 		timeout : 3000
 	});	
 }
-
 </script>
 </header>
 <body>

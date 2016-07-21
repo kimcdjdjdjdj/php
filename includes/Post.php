@@ -219,6 +219,33 @@
 		return $post;		
 	}
 	
+	function get_paging_limit_from_search ($search, $board_id, $page) {
+		if ($search !== true){
+			return 0;
+		}
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
+		
+		$list = 5;
+		$s_point = ($page - 1) * $list;
+		
+		$search_query = sprintf("SELECT * FROM post 
+		WHERE (title LIKE '%%%s%%') AND (board_id=%d)
+		ORDER BY post_id DESC 
+		LIMIT %d, %d", 
+		$search, $board_id, $s_point, $list);
+		$real_data = mysqli_query ($conn, $search_query);
+		while ($row = mysqli_fetch_assoc($real_data)) {			
+			if ($row['post_id'] == false){
+				mysqli_close($conn);
+				return 0;
+			} else {
+				$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
+				mysqli_close($conn);
+				return $post;
+			}			
+		}		
+	}
+	
 	function get_paging ($board_id, $page) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		$total_post = sprintf ("SELECT COUNT(*) AS num FROM post WHERE board_id=%d;", $board_id);
