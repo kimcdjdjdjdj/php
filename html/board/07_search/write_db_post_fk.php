@@ -10,12 +10,11 @@
 <?php
 	require_once '../../../includes/session.php';
 	start_session();
-	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-		$board = $_GET['board'];
-		if (isset ($_GET['user_name'])) {
-			$user_name = $_GET['user_name'];
-		}
-	}
+	
+	if (isset($_SESSION['id'])){
+		$user_name = $_SESSION['id'];
+	}	
+	
 	if (check_login()) {
 ?>
 <div class="wrap_write">
@@ -36,14 +35,10 @@
 	echo '<th class="th_write">내용</th>';
 	echo '<td class="td_wirte"><textarea class="text" type="text" name="comment" rows="10" cols="100%"></textarea></td>';
 	echo '</tr>';
-	echo '</table>';
-	echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
-	echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
+	echo '</table>';	
 	echo '<input class="submit_btn" type="submit" value="제출">';	
 	echo '</form>';
-	echo '<form action="index_db_fk.php" method="get">';
-	echo "<input type=\"hidden\" value=\"$user_name\" name=\"name\">";
-	echo "<input type=\"hidden\" value=\"$board\" name=\"id\">";
+	echo '<form action="index_db_fk.php" method="get">';	
 	echo '<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE; color:#000;" type="submit" value="목록">';
 	echo '</form>';
 	echo '</div>';
@@ -61,13 +56,13 @@
 	</tr>
 	</table>
 <?php	
-	echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
+	//echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
 ?>	
 	<input class="submit_btn" type="submit" value="로그인">
 	</form>
 	<form action="register_page.php" method="GET">
 <?php	
-	echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
+	//echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
 ?>	
 	<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE; color:#000;" type="submit" value="회원가입">
 	</form>	

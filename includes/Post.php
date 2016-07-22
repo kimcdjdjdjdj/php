@@ -220,7 +220,7 @@
 	}
 	
 	function get_paging_limit_from_search ($search, $board_id, $page) {
-		if ($search !== true){
+		if ($search == false){
 			return 0;
 		}
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');

@@ -12,12 +12,13 @@
 <div class="wrap_pro">
 <?php
 	require_once '../../../includes/post.php';
+	require_once '../../../includes/session.php';
+	start_session();
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
 		$title = $_POST['title'];		
 		$comment = $_POST['comment'];
-		$id = $_POST['number'];
-		$user_name = $_POST['user_name'];
+		$post_id = $_SESSION['post_id'];		
 		if (($title && $comment) === false) {
 			echo '<table>';
 			echo '<tr>';
@@ -25,13 +26,12 @@
 			echo '</tr>';				
 			echo '</table>';
 			echo '<form action = "modify.php" method = "get">';
-			echo "<input type=\"hidden\" value=\"$id\" name=\"number\">";
+			echo "<input type=\"hidden\" value=\"$post_id\" name=\"post_id\">";
 			echo '<input class="submit_btn_pro" type="submit" value="수정하기로">';
 			echo '</form>';
 		} else {	
-			modify_post($id, $title, $comment);		
-		
-			header("location: view_db_post_fk.php?number=$id&user_name=$user_name");
+			modify_post($post_id, $title, $comment);		
+			header("location: view_db_post_fk.php?post_id=$post_id");
 		}
 	}
 ?>

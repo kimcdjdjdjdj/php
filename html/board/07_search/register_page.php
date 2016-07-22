@@ -17,14 +17,10 @@
 		<tr><td>ID:</td><td><input type="text" name="name"></td></tr>
 		<tr><td>비번:</td><td><input type="text" name="password"></td></tr>
 	</table>
-<?php
-	if (isset ($_GET['board'])){
-		$board_id = $_GET['board'];
-		echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
-	}	
-	if (isset($_GET['post_id'])){
-		$post_id = $_GET['post_id'];
-		echo "<input type=\"hidden\" value=\"$post_id\" name=\"post_id\">";
+<?php	
+	if(isset($_GET['post'])){
+		$post = $_GET['post'];
+		echo "<input type=\"hidden\" value=\"post\" name=\"post\">";
 	}	
 ?>	
 	<input class="submit_btn" type="submit" value="가입하기">

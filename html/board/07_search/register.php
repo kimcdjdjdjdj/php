@@ -1,7 +1,8 @@
 <?php
 	require_once '../../../includes/session.php';
 	require_once '../../../includes/post.php';
- 
+	start_session();
+	
 	if (isset($_POST['name'], $_POST['password'])) {
 		$id = $_POST['name'];
 		$password = $_POST['password'];
@@ -18,16 +19,13 @@
 			$password_hash = password_hash($password, PASSWORD_DEFAULT);
 			mysqli_stmt_bind_param($stmt, "ss", $id, $password_hash);
 			mysqli_stmt_execute($stmt);
-			if (isset ($_POST['board'])){
-				$board_id = $_POST['board'];
-				header("Location: index_db_fk.php?id=$board_id");
+			if (isset($_POST['post'])){
+				$post_id = $_SESSION['post_id'];
+				header("Location: view_db_post_fk.php?post_id=$post_id");
+			}else if(isset ($_SESSION['board_id'])){
+				header("Location: index_db_fk.php");
 			} else {
-				if (isset($_POST['post_id'])) {
-					$post_id = $_POST['post_id'];
-					header("location: view_db_post_fk.php?number=$post_id");				
-				} else {
-					header("Location: board_number.php");
-				}
+				header("Location: board_number.php");				
 			}	
 		}
 		mysqli_free_result($result);

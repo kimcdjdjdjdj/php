@@ -17,8 +17,8 @@
 		
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
 			$reply_comment = $_POST['reply'];
-			$user_name = $_POST['name'];
-			$post_id = $_POST['post_id'];
+			$id = $_SESSION['id'];
+			$post_id = $_SESSION['post_id'];
 						
 			if (($reply_comment) == false) {
 				echo '<table>';
@@ -27,16 +27,15 @@
 				echo '</tr>';				
 				echo '</table>';
 				echo '<form action = "view_db_post_fk.php" method = "GET">';			
-				echo '<input type="hidden" value="'.$user_name.'" name="user_nam">';
-				echo '<input type="hidden" value="'.$post_id.'" name="number">';
+				echo '<input type="hidden" value="'.$post_id.'" name="post_id">';
 				echo '<input class="submit_btn_pro" type="submit" value="게시글로">';
 				echo '</form>';
 				echo '</div>';
 			} else {				
-				$reply = new reply (0, get_user_id($user_name), $reply_comment, 0, $post_id);
+				$reply = new reply (0, get_user_id($id), $reply_comment, 0, $post_id);
 				reply_post($reply);
 		
-				header("location: view_db_post_fk.php?number=$post_id&user_name=$user_name");
+				header("location: view_db_post_fk.php?post_id=$post_id");
 			}
 		}	
 ?>	

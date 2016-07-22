@@ -16,33 +16,42 @@
 <body class="bo">
 <?php
 	require_once '../../../includes/post.php';
-	if ($_SERVER['REQUEST_METHOD'] == 'GET'){
-		if(!(isset ($_GET['page']))){
-			$page = 1;
-			//echo $page;
-		} else {
-			$page = $_GET['page'];
-			if ($page == 0){
-				$page = 1;
-			}			
-		}			
-		$board_id = $_GET['id'];		
-	}
-?>	
-
-<?php
 	require_once '../../../includes/session.php';
 	start_session();
-	if (check_login()){	
+	
+	if (isset($_GET['board_id'])){
+		$_SESSION['board_id'] = $_GET['board_id'];
+		$board_id = $_SESSION['board_id'];
+	}else{
+		$board_id = $_SESSION['board_id'];
+	}
+	//echo $_SESSION['board_id'];
+	//echo $board_id;
+	if(!(isset ($_GET['page']))){
+		$page = 1;
+		//echo $page;
+	} else {
+		$page = $_GET['page'];
+		if ($page == 0){
+			$page = 1;
+		}
+	}
+?>
+
+<?php
+	
+	if (check_login()){
+	$my_id = $_SESSION['id'];
 ?>			
 		<div class="wrap">
 		<table class="table_index">
 <?php			
-		echo '<tr><td>로그인 되었습니다.</td>';
+		echo '<tr><td>'.$my_id.'님 로그인 되었습니다.</td>';
+		
 ?>			
 		<td><form action="logout.php" method="get">
 <?php
-		echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
+		//echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
 ?>			     
 		<input type="submit" value="로그아웃"></td>
 		</form></td>
@@ -58,13 +67,13 @@
 	<tr><td>ID</td><td><input type="text" name="name"></td>
 	<td>PASSWORD</td><td><input type="text" name="password"></td>
 <?php	
-	echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
+	//echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
 ?>	
 	<td><input type="submit" value="로그인"></td>
 	</form>
 	<form action="register_page.php" method="GET">
 <?php	
-	echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
+	//echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
 ?>	
 	 <td><input type="submit" value="회원가입"></td>
 	</form>
@@ -94,6 +103,7 @@ EOD;
 		$posts = get_paging_limit ($board_id, $page);
 	}
 	//print_r ($posts);
+	
 	if ($posts == 0){
 		echo '<tr>';
 		echo '<td class="td_index" colspan="4">검색 내용이 없습니다.</td>';
@@ -104,15 +114,10 @@ EOD;
 			$time = convert_time_string ($post->getCreated());
 			echo "<tr>";							//여기부터 ㄱㄱ
 			echo "<td class=\"td_index\">".$post->getId()."</td>";
-			if(isset ($_GET['name'])) {
-				$name = $_GET['name'];
-				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d&user_name=%s\">%s</a></td>", $post->getId(), $name, $post->getTitle());
-			} else {
-				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?number=%d\">%s</a></td>", $post->getId(), $post->getTitle());
-			}	
+			printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), $post->getTitle());			
 			echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
 			echo "<td class=\"td_index\">".$time."</td>";
-			echo "</tr>";		
+			echo "</tr>";
 		}	
 		echo '</table>';
 		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';
@@ -120,22 +125,12 @@ EOD;
 		echo '</div>';
 	}	
 	echo '<div style="margin:0 auto; width:300px; margin-top:20px;">';
-	echo '<form action="index_db_fk.php" method="get">';
-	if(isset ($_GET['name'])) {
-		$name = $_GET['name'];
-		echo "<input type=\"hidden\" value=\"$name\" name=\"name\">";
-	}
-	echo "<input type=\"hidden\" value=\"$board_id\" name=\"id\">";
+	echo '<form action="index_db_fk.php" method="get">';	
 	echo '<input  type="text" name="search">';
 	echo '<input type="submit" value="검색">';
 	echo '</form>';
 	echo '</div>';
-	echo '<form action="write_db_post_fk.php" method="get">';
-	if(isset ($_GET['name'])) {
-		$name = $_GET['name'];
-		echo "<input type=\"hidden\" value=\"$name\" name=\"user_name\">";
-	}
-	echo "<input type=\"hidden\" value=\"$board_id\" name=\"board\">";
+	echo '<form action="write_db_post_fk.php" method="get">';	
 	echo '<input style="float:right; margin-top:15px; background:#AFEEEE;
 	color:#000;" type="submit" value="글쓰기">';
 	echo '</form>';	

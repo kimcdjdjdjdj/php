@@ -14,16 +14,13 @@ if (isset($_POST['name'], $_POST['password'])) {
 	echo "login.php";
 	
     if (try_to_login($id, $password) == true) {
-        if (isset($_POST['board'])) {
-			$board_id = $_POST['board'];
-			header("Location: index_db_fk.php?id=$board_id&name=$id");
+        if (isset($_POST['post'])){
+			$post_id = $_SESSION['post_id'];
+			header("Location: view_db_post_fk.php?post_id=$post_id");
+		} else if (isset($_SESSION['board_id'])) {		
+			header("Location: index_db_fk.php");
 		} else {
-			if (isset($_POST['post_id'])) {
-				$post_id = $_POST['post_id'];
-				header("location: view_db_post_fk.php?number=$post_id&user_name=$id");				
-			} else {
-				header("Location: board_number.php");
-			}
+			header("Location: board_number.php");
 		}	
     } else {
 		// 이멜주소 또는 비번이 등록되지 않았거나 틀림

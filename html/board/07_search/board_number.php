@@ -26,12 +26,13 @@ a:hover {color:blue;}
 <?php
 	require_once '../../../includes/session.php';
 	start_session();
-	if (check_login()){			
+	
+	if (check_login()){		
 ?>			
 		<div class="login">
 		<table>
 <?php			
-		echo '<tr><td>로그인 되었습니다.</td>';
+		echo '<tr><td>'.$_SESSION['id'].'님 로그인 되었습니다.</td>';
 ?>			
 		<td><form action="logout.php" method="get">
 		<input type="submit" value="로그아웃"></td>
@@ -67,10 +68,10 @@ a:hover {color:blue;}
 <tr>
 <td rowspan="2">게시판</td>
 
-<td><a href="index_db_fk.php?id=1">게시판1</a></td>
+<td><a href="index_db_fk.php?board_id=1">게시판1</a></td>
 </tr>
 <tr>
-<td><a href="index_db_fk.php?id=2">게시판2</a></td>
+<td><a href="index_db_fk.php?board_id=2">게시판2</a></td>
 </tr>
 
 </table>
