@@ -99,34 +99,50 @@ EOD;
 	if(isset($_GET['search'])){
 		$search = $_GET['search'];
 		$posts = get_paging_limit_from_search ($search, $board_id, $page);
+		
+		if ($posts == 0){
+			echo '<tr>';
+			echo '<td class="td_index" colspan="4">검색 내용이 없습니다.</td>';
+			echo '</tr>';
+			echo '</table>';
+		} else {
+			foreach ($posts as $key => $post) {
+				$time = convert_time_string ($post->getCreated());
+				echo "<tr>";							
+				echo "<td class=\"td_index\">".$post->getId()."</td>";
+				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), $post->getTitle());			
+				echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
+				echo "<td class=\"td_index\">".$time."</td>";
+				echo "</tr>";
+			}
+		echo '</table>';
+		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';		
+		echo get_paging_for_search ($board_id, $page, $post->getCountSearch(), $search);
+		echo '</div>';
+		}	
 	} else {
 		$posts = get_paging_limit ($board_id, $page);
-	}
-	//print_r ($posts);
-	
-	if ($posts == 0){
-		echo '<tr>';
-		echo '<td class="td_index" colspan="4">검색 내용이 없습니다.</td>';
-		echo '</tr>';
-		echo '</table>';
-	} else {
+		
 		foreach ($posts as $key => $post) {
 			$time = convert_time_string ($post->getCreated());
-			echo "<tr>";							//여기부터 ㄱㄱ
+			echo "<tr>";							
 			echo "<td class=\"td_index\">".$post->getId()."</td>";
 			printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), $post->getTitle());			
 			echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
 			echo "<td class=\"td_index\">".$time."</td>";
 			echo "</tr>";
-		}	
+		}
 		echo '</table>';
 		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';
 		echo get_paging ($board_id, $page);
 		echo '</div>';
-	}	
+	}
+	//print_r ($posts);
+	
+	
 	echo '<div style="margin:0 auto; width:300px; margin-top:20px;">';
 	echo '<form action="index_db_fk.php" method="get">';	
-	echo '<input  type="text" name="search">';
+	echo '<input  type="text" name="search"  autocomplete="off">';
 	echo '<input type="submit" value="검색">';
 	echo '</form>';
 	echo '</div>';

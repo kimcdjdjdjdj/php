@@ -50,19 +50,24 @@
 	
 	function get_words2($input, $num){ //db
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$select_query = sprintf("SELECT word FROM calvin.dictionary2 
+		
+		$create_query = sprintf("CREATE OR REPLACE VIEW kimjongchan.temp2 
+		AS (SELECT word FROM calvin.dictionary2
 		WHERE word LIKE '%%%s%%' 
 		ORDER BY (CASE WHEN rank IS NULL THEN 6000 ELSE rank END) 
-		LIMIT %d;", $input, $num);
+		LIMIT %d);", $input, $num);
+		$select_query = "SELECT * FROM kimjongchan.temp2 ORDER BY word";
 		
-		$result = mysqli_query($conn, $select_query);
-		
+		mysqli_multi_query($conn, $create_query.$select_query);
+		mysqli_next_result($conn);	
+		$result = mysqli_store_result($conn);
+	
 		$words = array();
 		while ($row = mysqli_fetch_assoc ($result)){
 			$words[] = $row['word'];
 		}
 		mysqli_close($conn);
-		sort($words);
+		
 		$auto_complete_word = implode(' ', $words);
 		return $auto_complete_word;
 	}

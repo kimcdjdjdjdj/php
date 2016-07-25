@@ -7,7 +7,7 @@
 		$id_query = sprintf("SELECT * FROM kimjongchan.post WHERE post_id=%d;", $id);
 		$result = mysqli_query ($conn, $id_query);
 		$row = mysqli_fetch_assoc ($result);
-		$post = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
+		$post = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id'], 0);
 		mysqli_close($conn);
 		return $post;
 	}
@@ -141,13 +141,14 @@
 	}
 	
 	class Post {
-		function __construct($id, $title, $user_id, $comment, $last_update, $board_id) {
+		function __construct($id, $title, $user_id, $comment, $last_update, $board_id, $count_search) {
 			$this->id = $id;
 			$this->title = $title;
 			$this->userid = $user_id;
 			$this->comment = $comment;
 			$this->created = $last_update;
 			$this->boardId = $board_id;
+			$this->countSearch = $count_search;
 		}
 		
 		function getId() {
@@ -172,6 +173,10 @@
 		
 		function getBoardId() {
 			return $this->boardId;
+		}
+		
+		function getCountSearch() {
+			return $this->countSearch;
 		}
 	}
 	
@@ -213,7 +218,7 @@
 		$limit_query = sprintf("SELECT * FROM post WHERE board_id=%d ORDER BY post_id DESC LIMIT %d, %d", $board_id, $s_point, $list);
 		$real_data = mysqli_query ($conn, $limit_query);
 		while ($row = mysqli_fetch_assoc($real_data)) {
-			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
+			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id'], 0);
 		}
 		mysqli_close($conn);
 		return $post;		
@@ -228,21 +233,31 @@
 		$list = 5;
 		$s_point = ($page - 1) * $list;
 		
-		$search_query = sprintf("SELECT * FROM post 
+		//여기부터
+		
+		$all_query = sprintf("CREATE TEMPORARY TABLE search AS(SELECT * FROM post 
 		WHERE (title LIKE '%%%s%%') AND (board_id=%d)
-		ORDER BY post_id DESC 
-		LIMIT %d, %d", 
-		$search, $board_id, $s_point, $list);
-		$real_data = mysqli_query ($conn, $search_query);
-		while ($row = mysqli_fetch_assoc($real_data)) {			
-			if ($row['post_id'] == false){
+		ORDER BY post_id DESC);", $search, $board_id);
+		$count_query = "SELECT COUNT(*) FROM search";
+		mysqli_multi_query($conn, $all_query.$count_query);
+		mysqli_next_result($conn);
+		$result =  mysqli_store_result($conn);
+		$row2 = mysqli_fetch_assoc($result);
+		$count_search = intval($row2['COUNT(*)']);
+		
+		$search_query = sprintf("SELECT * FROM search 
+		LIMIT %d, %d;", $s_point, $list);
+		$real_data =  mysqli_query($conn, $search_query);
+				
+		if ($count_search === 0){
 				mysqli_close($conn);
 				return 0;
-			} else {
-				$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id']);
-				mysqli_close($conn);
-				return $post;
-			}			
+		} else{
+			while ($row = mysqli_fetch_assoc($real_data)) {			
+			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id'], $count_search);		
+			}
+			mysqli_close($conn);
+			return $post;
 		}		
 	}
 	
@@ -307,6 +322,62 @@
 		$s_point = ($page - 1) * $list;
 	}
 	
+	function get_paging_for_search ($board_id, $page, $count_search, $search) {
+		$num = $count_search; //총 게시물
+		$list = 5; // 페이지당 출력 게시물
+		$block = 5; //블록당 페이지 수
+		$page_num = ceil ($num/$list); //총 페이지
+		$block_num = ceil ($page_num/$block); //총 블럭
+		$now_block = ceil ($page/$block); //현재 블럭
+		$start_page = (($now_block - 1) * $block) + 1; //블럭의 첫번째 번호
+		if ($start_page <= 1){
+			$start_page = 1;
+		}
+		$end_page = $now_block * $block;
+		if ($page_num <= $end_page){
+			$end_page = $page_num;
+		}
+		
+		
+		if($page <=1){
+			echo '<처음>';
+		}else {
+				printf ("<a href=\"index_db_fk.php?page=1&search='%s'\"><처음></a>", $$search);
+			}
+		if ($now_block <= 1){
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%d&search='%s'\"><<<</a>", $start_page - 1, $search);
+		}
+		if ($page <= 1){
+			
+		} else {
+		printf ("<a href=\"index_db_fk.php?page=%d&search='%s'\"><이전></a>", $page - 1, $search);
+		}
+		for ($p = $start_page; $p <= $end_page; $p +=1){
+			if ($page == $p)
+				echo "[$p]";
+			else {
+				printf ("<a href=\"index_db_fk.php?page=%d&search='%s'\">[%d]</a>", $p, $search, $p);
+			}	
+		}
+		if ($page >= $page_num) {
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%dsearch='%s'\"><다음></a>", $page + 1, $search);
+		}
+		if ($now_block >= $block_num){
+			
+		} else {
+			printf ("<a href=\"index_db_fk.php?page=%d&search='%s'\">>>></a>", $end_page + 1, $search);
+		}
+		if($page >= $page_num){
+			
+		}else {
+				printf ("<a href=\"index_db_fk.php?page=%d&search='%s'\"><마지막></a>", $page_num, $search);
+			}
+		$s_point = ($page - 1) * $list;
+	}
 	function get_user_id ($user_name) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		$id_query = sprintf("SELECT user_id FROM kimjongchan.user_account WHERE user_name='%s';", $user_name);
