@@ -40,15 +40,21 @@ function tryLogin(form, password) {
 	}
 	//echo $_SESSION['board_id'];
 	//echo $board_id;
+	
+	
 	if(!(isset ($_GET['page']))){
 		$page = 1;
+		$_SESSION['page'] = $page;
 		//echo $page;
 	} else {
 		$page = $_GET['page'];
+		$_SESSION['page'] = $page;
 		if ($page == 0){
 			$page = 1;
+			$_SESSION['page'] = $page;
 		}
 	}
+	$page = $_SESSION['page'];
 ?>
 
 <?php
@@ -102,13 +108,14 @@ function tryLogin(form, password) {
 	} else {
 		echo '<h1 board_id="name">게시판2</h1>';
 	}
+?>	
 	
-	echo <<<EOD
 	<table class="table_index">
 	<tr>
 	<th class="num">글번호</th><th class="th_idex">제목</th><th class="writer">글쓴이</th><th class="date">수정일</th>
 	</tr>	
-EOD;
+
+<?php
 	if(isset($_GET['search'])){
 		$search = $_GET['search'];
 		$posts = get_paging_limit_from_search ($search, $board_id, $page);
@@ -174,7 +181,7 @@ EOD;
 	echo '<input style="float:right; margin-top:15px; background:#AFEEEE;
 	color:#000;" type="submit" value="글쓰기">';
 	echo '</form>';	
-?> 
+?>
 </div>
 
 </body>

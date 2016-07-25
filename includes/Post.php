@@ -262,10 +262,10 @@
 		ORDER BY post_id DESC)';
 		$stmt = mysqli_prepare($conn, $all_query);
 		mysqli_stmt_bind_param($stmt, 'si', $search, $board_id);
-		mysqli_stmt_execute($stmt);		
+		mysqli_stmt_execute($stmt);
 		//TEMPORARY TABLE에 있는 갯수 확인
 		$count_query = "SELECT COUNT(*) FROM search";
-		$result = mysqli_query($conn, $count_query);		
+		$result = mysqli_query($conn, $count_query);
 		$row2 = mysqli_fetch_assoc($result);
 		$count_search = intval($row2['COUNT(*)']);
 		

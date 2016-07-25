@@ -38,7 +38,7 @@ function tryLogin(form, password) {
 	echo '<form action = "write_processes_db_fk.php" method = "post">';
 	echo '<tr>';
 	echo '<th class="th_write">제목</th>';
-	echo '<td class="td_wirte"><input class="text" type="text" name="title"></td>';
+	echo '<td class="td_wirte"><input class="text" type="text" name="title" autocomplete="off"></td>';
 	echo '</tr>';
 	echo '<tr>';
 	echo '<th class="th_write">글쓴이</th>';
