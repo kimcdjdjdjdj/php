@@ -255,7 +255,7 @@
 		$list = 5;
 		$s_point = ($page - 1) * $list;
 		
-		
+		$search = '%'.$search.'%';
 		//검색한 단어가 포함된  post를 TEMPORARY TABLE에 넣는다.
 		$all_query = 'CREATE TEMPORARY TABLE search AS(SELECT * FROM post 
 		WHERE (title LIKE ?) AND (board_id=?)
