@@ -255,15 +255,17 @@
 		$list = 5;
 		$s_point = ($page - 1) * $list;
 		
-		//여기부터
 		
-		$all_query = sprintf("CREATE TEMPORARY TABLE search AS(SELECT * FROM post 
-		WHERE (title LIKE '%%%s%%') AND (board_id=%d)
-		ORDER BY post_id DESC);", $search, $board_id);
+		//검색한 단어가 포함된  post를 TEMPORARY TABLE에 넣는다.
+		$all_query = 'CREATE TEMPORARY TABLE search AS(SELECT * FROM post 
+		WHERE (title LIKE ?) AND (board_id=?)
+		ORDER BY post_id DESC)';
+		$stmt = mysqli_prepare($conn, $all_query);
+		mysqli_stmt_bind_param($stmt, 'si', $search, $board_id);
+		mysqli_stmt_execute($stmt);		
+		//TEMPORARY TABLE에 있는 갯수 확인
 		$count_query = "SELECT COUNT(*) FROM search";
-		mysqli_multi_query($conn, $all_query.$count_query);
-		mysqli_next_result($conn);
-		$result =  mysqli_store_result($conn);
+		$result = mysqli_query($conn, $count_query);		
 		$row2 = mysqli_fetch_assoc($result);
 		$count_search = intval($row2['COUNT(*)']);
 		

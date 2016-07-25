@@ -15,7 +15,7 @@
 			header('Location: error.php?error_code=4');
 		} else {
 			$stmt = mysqli_prepare($conn, "INSERT INTO kimjongchan.user_account (user_name, hash)VALUES (?, ?); ");
-			echo mysqli_error($conn);
+			//echo mysqli_error($conn);
 			$password_hash = password_hash($password, PASSWORD_DEFAULT);
 			mysqli_stmt_bind_param($stmt, "ss", $id, $password_hash);
 			mysqli_stmt_execute($stmt);
