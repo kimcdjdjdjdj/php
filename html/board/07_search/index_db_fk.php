@@ -54,7 +54,7 @@ function tryLogin(form, password) {
 			$_SESSION['page'] = $page;
 		}
 	}
-	$page = $_SESSION['page'];
+	
 ?>
 
 <?php
