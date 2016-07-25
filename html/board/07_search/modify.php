@@ -4,6 +4,19 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<script language="javascript" src="sha512.js"></script>
+<script>
+function tryLogin(form, password) {
+    var hash = document.createElement('input');
+    form.appendChild(hash);
+    hash.name = 'hash';
+	hash.type = 'hidden';
+	hash.value = hex_sha512(password.value);
+    password.value = '';
+	form.submit();
+	return true;
+}
+</script>
 </head>
 <body class="bo">
 <?php
@@ -63,7 +76,7 @@
 		</tr>
 		</table>
 
-		<input class="submit_btn" type="submit" value="로그인">
+		<button onclick="tryLogin(this.form, this.form.password);">로그인</button>
 		</form>		
 <?php
 	}

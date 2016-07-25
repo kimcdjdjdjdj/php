@@ -4,6 +4,19 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+		<script language="javascript" src="sha512.js"></script>
+<script>
+function tryLogin(form, password) {
+    var hash = document.createElement('input');
+    form.appendChild(hash);
+    hash.name = 'hash';
+	hash.type = 'hidden';
+	hash.value = hex_sha512(password.value);
+    password.value = '';
+	form.submit();
+	return true;
+}
+</script>
 </head>
 
 <body class="bo">
@@ -49,16 +62,16 @@
 	<form action="login.php" method="POST">
 	<table class="table_write">
 	<tr>
-	<td>ID</td><td><input type="text" name="name"></td>
+	<td>ID</td><td><input type="text" name="name" autocomplete="off"></td>
 	</tr>
 	<tr>
-	<td>PASSWORD</td><td><input type="text" name="password"></td>
+	<td>PASSWORD</td><td><input type="password" name="password"></td>
 	</tr>
 	</table>
 <?php	
 	//echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
 ?>	
-	<input class="submit_btn" type="submit" value="로그인">
+	<button class="submit_btn" onclick="tryLogin(this.form, this.form.password);">로그인</button>
 	</form>
 	<form action="register_page.php" method="GET">
 <?php	

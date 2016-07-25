@@ -2,6 +2,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <html>
+<head>
 <style type="text/css">
 
 .wrap {margin:0 auto; width:70%; margin-top:50px;}
@@ -19,7 +20,20 @@ a:visited {color:red;}
 a:hover {color:blue;}
 
 </style>
-
+<script language="javascript" src="sha512.js"></script>
+<script>
+function tryLogin(form, password) {
+    var hash = document.createElement('input');
+    form.appendChild(hash);
+    hash.name = 'hash';
+	hash.type = 'hidden';
+	hash.value = hex_sha512(password.value);
+    password.value = '';
+	form.submit();
+	return true;
+}
+</script>
+</head>
 <body class="bo">
 
 
@@ -46,9 +60,9 @@ a:hover {color:blue;}
 	<div class="login">
 	<form action="login.php" method="POST">
 	<table>
-	<tr><td>ID : </td><td><input type="text" name="name"></td>
-	<td>PASSWORD : </td><td><input type="text" name="password"></td>
-	<td><input type="submit" value="로그인"></td>
+	<tr><td>ID : </td><td><input type="text" name="name" autocomplete="off"></td>
+	<td>PASSWORD : </td><td><input type="password" name="password"></td>
+	<td><button onclick="tryLogin(this.form, this.form.password);">로그인</button></td>
 	</form>
 	<form action="register_page.php" method="GET">
 	 <td><input type="submit" value="회원가입"></td>

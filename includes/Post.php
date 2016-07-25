@@ -221,7 +221,11 @@
 			$post[] = new post ($row['post_id'], $row['title'], $row['user_id'], $row['comment'], $row['last_update'], $row['board_id'], 0);
 		}
 		mysqli_close($conn);
-		return $post;		
+		if(!(isset($post))){
+			return 1;
+		} else{
+			return $post;
+		}	
 	}
 	
 	function get_paging_limit_from_search ($search, $board_id, $page) {
