@@ -41,7 +41,7 @@ function tryLogin(form, password) {
 			echo '<form action = "modify_processes.php" method = "post">';
 			echo '<tr>';
 			echo '<th class="th_write">제목</th>';
-			echo "<td class=\"td_wirte\"><input class=\"text\" type=\"text\" name=\"title\" value=\"$title\"></td>";
+			echo "<td class=\"td_wirte\"><input class=\"text\" type=\"text\" name=\"title\" value=\"$title\" autocomplete=\"off\"></td>";
 			echo '</tr>';
 			echo '<tr>';
 			echo '<th class="th_write">글쓴이</th>';

@@ -25,9 +25,14 @@
 	}
 	
 	function insert_post ($post) {
-		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$insert_query = sprintf ("INSERT INTO post (title, user_id, comment, board_id) VALUES ('%s', %d, '%s', %d)", $post->getTitle(), $post->getUserId(), $post->getComment(), $post->getBoardId());
-		mysqli_query($conn, $insert_query);
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
+		
+		$insert_query = 'INSERT INTO post (title, user_id, comment, board_id) VALUES (?, ?, ?, ?)';
+		$stmt = mysqli_prepare($conn, $insert_query);
+		mysqli_stmt_bind_param($stmt, 'sisi', $post->getTitle(), $post->getUserId(), $post->getComment(), $post->getBoardId());
+		if (!mysqli_stmt_execute($stmt)) {
+			die('add_post query failure');
+		}
 		mysqli_close($conn);
 	}
 	
@@ -46,18 +51,27 @@
 		mysqli_close($conn);
 	}
 	
-	function modify_post ($id, $title, $comment) {
-		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$modify_query = sprintf ("UPDATE post SET title='%s', comment='%s' WHERE post_id=%d", $title, $comment, $id);
-		mysqli_query ($conn, $modify_query);
+	function modify_post ($post_id, $title, $comment) {
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
+		$modify_query = 'UPDATE post SET title=?, comment=? WHERE post_id=?';
+		$stmt = mysqli_prepare($conn, $modify_query);
+		mysqli_stmt_bind_param($stmt, 'ssi', $title, $comment, $post_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			die('add_post query failure');
+		}
 		mysqli_close($conn);
+		
 	}
 	
 	function reply_post ($reply) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$reply_query = sprintf ("INSERT INTO reply (user_id, reply_comment, post_id) VALUES ('%s', '%s', %d)", $reply->getReplyUserID(), $reply->getReplyComment(), $reply->getPostId());
-		mysqli_query($conn, $reply_query);
-		mysqli_close($conn);		
+		$reply_query = 'INSERT INTO reply (user_id, reply_comment, post_id) VALUES (?, ?, ?)';
+		$stmt = mysqli_prepare($conn, $reply_query);
+		mysqli_stmt_bind_param($stmt, 'ssi', $reply->getReplyUserID(), $reply->getReplyComment(), $reply->getPostId());
+		if (!mysqli_stmt_execute($stmt)) {
+			die('add_post query failure');
+		}
+		mysqli_close($conn);
 	}
 	
 	function get_reply_from_id ($id) {
@@ -83,9 +97,13 @@
 	}
 	
 	function modify_reply ($reply_id, $reply_comment) {
-		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$modify_query = sprintf ("UPDATE reply SET reply_comment='%s' WHERE reply_id=%d", $reply_comment, $reply_id);
-		mysqli_query ($conn, $modify_query);
+		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');		
+		$modify_query = 'UPDATE reply SET reply_comment=? WHERE reply_id=?';
+		$stmt = mysqli_prepare($conn, $modify_query);
+		mysqli_stmt_bind_param($stmt, 'si', $reply_comment, $reply_id);
+		if (!mysqli_stmt_execute($stmt)) {
+			die('add_post query failure');
+		}
 		mysqli_close($conn);
 	}
 	
