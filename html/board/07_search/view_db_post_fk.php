@@ -104,6 +104,8 @@ function tryLogin(form, password) {
 	if(!(isset($_SESSION['board_id']))){
 		echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
 	}
+	$page = $_SESSION['page'];
+	echo "<input type=\"hidden\" value=\"$page\" name=\"page\">";
 	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; background:#AFEEEE;color:#000;" type="submit" value="목록">';
 	echo '</form>';
 	if (isset($_SESSION['id'])){

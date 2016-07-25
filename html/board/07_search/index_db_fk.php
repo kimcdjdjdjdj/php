@@ -136,7 +136,7 @@ function tryLogin(form, password) {
 				echo "</tr>";
 			}
 		echo '</table>';
-		echo '<div style="margin:0 auto; width:30%; margin-top:5px;">';		
+		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';		
 		echo get_paging_for_search ($board_id, $page, $post->getCountSearch(), $search);
 		echo '</div>';
 		}	
@@ -158,7 +158,7 @@ function tryLogin(form, password) {
 			}	
 		}
 		echo '</table>';
-		echo '<div style="margin:0 auto; width:30%; margin-top:5px;">';
+		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';
 		echo get_paging ($board_id, $page);
 		echo '</div>';
 	}
