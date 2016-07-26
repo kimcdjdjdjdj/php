@@ -12,12 +12,17 @@ function checkRegisterForm(form, id, password, password2) {
         return false;
     }*/
     // id 검사
-    var re = /^\w+$/; 
-    if(!re.test(id.value)) { 
+    var re = /^\w+$/;  // \w = [a~z, A~Z]
+    if(!re.test(id.value)) { //re.test(id.value) => true, false
         alert('아이디는 숫자와 영문자, _ 만 가능함'); 
         id.focus();
         return false; 
     }
+	
+	//123으로만 만들어진 문자열(길이 1이상)
+	//var re = /[123]+/;
+	//핸드폰 번호
+	//var re = /^010-\d\d\d\d-\d\d\d\d$/;
 
 	// 최소한 6자리
     /*if (password.value.length < 6) {

@@ -26,7 +26,7 @@
 	}	
 ?>
 	
-	<button class="submit_btn" onclick="checkRegisterForm(this.form, this.form.id, this.form.password);">가입하기</button>
+	<button class="submit_btn" onclick="checkRegisterForm(this.form, this.form.name, this.form.password);">가입하기</button>
 </form>
 </div>
 </body>

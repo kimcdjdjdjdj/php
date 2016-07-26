@@ -94,10 +94,10 @@ function tryLogin(form, password) {
 	echo '<th class="num_view">글번호</th><th>제목</th><th>글쓴이</th><th>수정일</th>';
 	echo '</tr>';
 	echo '<tr>';
-	echo '<td class="td_view">'.$num.'</td><td class="td_view">'.$title.'</td><td class="td_view" class="writer">'.$user_name.'</td><td class="td_view" class="date">'.$last_update.'</td>';
+	echo '<td class="td_view">'.$num.'</td><td class="td_view">'.htmlspecialchars($title).'</td><td class="td_view" class="writer">'.htmlspecialchars($user_name).'</td><td class="td_view" class="date">'.$last_update.'</td>';
 	echo '</tr>';
 	echo '<tr>';
-	echo '<th>내용</th><td class="td_view" colspan="3">'.$comment.'</td>';
+	echo '<th>내용</th><td class="td_view" colspan="3">'.htmlspecialchars($comment).'</td>';
 	echo '</tr>';
 	echo '</table>';
 	echo '<form action = "index_db_fk.php" method = "get">';
@@ -132,7 +132,7 @@ function tryLogin(form, password) {
 			echo '<th>댓글</th>';
 			echo '<td ><textarea type="text" name="reply" rows="3" cols="43%">'.$reply->getReplyComment().'</textarea></td>';
 			echo '<th>작성자</th>';
-			echo '<td style="width:13%";>'.get_user_name($reply->getReplyUserID()).'</td>';
+			echo '<td style="width:13%";>'.htmlspecialchars(get_user_name($reply->getReplyUserID())).'</td>';
 			echo "<th>수정일</th>";
 			echo '<td style="width:16%";>'.$reply_time."</td>";
 			echo '</tr>';
@@ -177,9 +177,9 @@ function tryLogin(form, password) {
 		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
 		echo "<tr>";
 		echo "<th>내용</th>";
-		echo '<td style="width:39%";>'.$reply->getReplyComment()."</td>";
+		echo '<td style="width:39%";>'.htmlspecialchars($reply->getReplyComment())."</td>";
 		echo "<th>작성자</th>";
-		echo '<td style="width:16%";>'.get_user_name ($reply->getReplyUserID())."</td>";
+		echo '<td style="width:16%";>'.htmlspecialchars(get_user_name ($reply->getReplyUserID()))."</td>";
 		echo "<th>수정일</th>";
 		echo '<td style="width:16%";>'.$reply_time."</td>";
 		echo '<td>';
@@ -187,7 +187,7 @@ function tryLogin(form, password) {
 			if(get_user_name ($reply->getReplyUserID()) === $_SESSION['id']){
 				echo '<form action = "view_db_post_fk.php" method = "POST">';
 				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
-				echo '<input type="hidden" value="'.$post->getId().'" name="post_id">';
+				echo '<input type="hidden" value="'.htmlspecialchars($post->getId()).'" name="post_id">';
 				echo '<input style="margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
 				echo '</form>';
 				echo '<form action = "delete.php" method = "POST">';

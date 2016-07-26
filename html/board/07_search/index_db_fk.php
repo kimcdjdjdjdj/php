@@ -130,7 +130,7 @@ function tryLogin(form, password) {
 				$time = convert_time_string ($post->getCreated());
 				echo "<tr>";							
 				echo "<td class=\"td_index\">".$post->getId()."</td>";
-				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), $post->getTitle());			
+				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), htmlspecialchars($post->getTitle()));			
 				echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
 				echo "<td class=\"td_index\">".$time."</td>";
 				echo "</tr>";
@@ -151,7 +151,7 @@ function tryLogin(form, password) {
 				$time = convert_time_string ($post->getCreated());
 				echo "<tr>";							
 				echo "<td class=\"td_index\">".$post->getId()."</td>";
-				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), $post->getTitle());			
+				printf ("<td class=\"td_index\"><a href=\"view_db_post_fk.php?post_id=%d\">%s</a></td>", $post->getId(), htmlspecialchars($post->getTitle()));			
 				echo "<td class=\"td_index\">".get_user_name($post->getUserId())."</td>";
 				echo "<td class=\"td_index\">".$time."</td>";
 				echo "</tr>";
