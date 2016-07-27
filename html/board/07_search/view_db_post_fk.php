@@ -194,9 +194,10 @@ function editReply(button, replyId, form) {
 		echo '<td style="width:16%";>'.htmlspecialchars(get_user_name ($reply->getReplyUserID()))."</td>";
 		echo "<th>수정일</th>";
 		echo '<td style="width:16%";>'.$reply_time."</td>";
-		echo '<td>';
+		
 		if (isset($_SESSION['id'])){
 			if(get_user_name ($reply->getReplyUserID()) === $_SESSION['id']){
+				echo '<td>';
 				echo '<form action = "reply_modify.php" method = "POST">';
 				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
 				echo '<input type="hidden" value="'.htmlspecialchars($post->getId()).'" name="post_id">';
@@ -208,9 +209,14 @@ function editReply(button, replyId, form) {
 				echo '<input class="view_reply_del" type="submit" value="삭제">';
 				echo '</form>';		
 				echo '</td>';
+				echo "</tr>";
+			} else{				
+				echo "</tr>";
 			}
-		}		
-		echo "</tr>";
+		} else {			
+			echo "</tr>";
+		}	
+		
 	}
 	echo "</table>";
 ?>
