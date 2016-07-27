@@ -22,8 +22,7 @@ function tryLogin(form, password) {
 
 <form action="logout.php" method="get">
 <input input type="hidden" value="logout" name="logout">
-<input style="margin-top:50px; margin-left:170px; background:#AFEEEE;
-	color:#000;" type="submit" value="처음으로">
+<input id="main" type="submit" value="처음으로">
 </form>
 
 <body class="bo">
@@ -136,7 +135,7 @@ function tryLogin(form, password) {
 				echo "</tr>";
 			}
 		echo '</table>';
-		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';		
+		echo '<div class="paging">';		
 		echo get_paging_for_search ($board_id, $page, $post->getCountSearch(), $search);
 		echo '</div>';
 		}	
@@ -158,7 +157,7 @@ function tryLogin(form, password) {
 			}	
 		}
 		echo '</table>';
-		echo '<div style="margin:0 auto; width:300px; margin-top:5px;">';
+		echo '<div class="paging">';
 		echo get_paging ($board_id, $page);
 		echo '</div>';
 	}
@@ -178,8 +177,7 @@ function tryLogin(form, password) {
 	}
 	echo '</div>';
 	echo '<form action="write_db_post_fk.php" method="get">';	
-	echo '<input style="float:right; margin-top:15px; background:#AFEEEE;
-	color:#000;" type="submit" value="글쓰기">';
+	echo '<input class="write_btn" type="submit" value="글쓰기">';
 	echo '</form>';	
 ?>
 </div>

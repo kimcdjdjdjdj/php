@@ -19,22 +19,11 @@
 		$reply_comment = $_POST['reply'];		
 		$reply_id = $_POST['reply_id'];
 		$post_id = $_SESSION['post_id'];		
-		if ($reply_comment == false) {
-			echo '<table>';
-			echo '<tr>';
-			echo '<td>빈칸이 없이 입력해주세요.</td>';
-			echo '</tr>';				
-			echo '</table>';
-			echo '<form action = "view_db_post_fk.php" method = "POST">';
-			echo '<input type="hidden" value="'.$reply_id.'" name="reply_id">';
-			echo '<input type="hidden" value="'.$post_id.'" name="post_id">';			
-			echo '<input class="submit_btn_pro" type="submit" value="댓글 수정">';
-			echo '</form>';
-		} else {
-			modify_reply($reply_id, $reply_comment);
 		
-			header("location: view_db_post_fk.php?post_id=$post_id");
-		}
+		modify_reply($reply_id, $reply_comment);
+		
+		header("location: view_db_post_fk.php?post_id=$post_id");
+		
 	}	
 ?>
 </div>

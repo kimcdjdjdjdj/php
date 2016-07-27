@@ -56,7 +56,7 @@ function tryLogin(form, password) {
 			echo '</form>';
 			echo '<form action = "view_db_post_fk.php" method = "get">';			
 			echo "<input type=\"hidden\" value=\"$post_id\" name=\"post_id\">";
-			echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="게시물로">';
+			echo '<input class="modify_post" type="submit" value="게시물로">';
 			echo '</form>';	
 			echo '</div>';
 		} else {

@@ -16,6 +16,7 @@ function tryLogin(form, password) {
 	form.submit();
 	return true;
 }
+
 </script>
 </head>
 
@@ -52,7 +53,7 @@ function tryLogin(form, password) {
 	echo '<input class="submit_btn" type="submit" value="제출">';	
 	echo '</form>';
 	echo '<form action="index_db_fk.php" method="get">';	
-	echo '<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE; color:#000;" type="submit" value="목록">';
+	echo '<input class="write_submit" type="submit" value="목록">';
 	echo '</form>';
 	echo '</div>';
 	} else {
@@ -77,7 +78,7 @@ function tryLogin(form, password) {
 <?php	
 	//echo "<input type=\"hidden\" value=\"$board\" name=\"board\">";
 ?>	
-	<input style="float:right; margin-top:15px; margin-right:20px; background:#AFEEEE; color:#000;" type="submit" value="회원가입">
+	<input class="write_submit" type="submit" value="회원가입">
 	</form>	
 	</div>
 <?php

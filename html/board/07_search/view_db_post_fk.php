@@ -17,6 +17,40 @@ function tryLogin(form, password) {
 	form.submit();
 	return true;
 }
+
+var isEditReplyMode = false;
+function editReply(button, replyId, form) {
+	var cell = document.getElementById(replyId);
+	if (isEditReplyMode == false) {
+		var content = cell.innerHTML;
+		cell.innerHTML = '';
+		var textarea = document.createElement('textarea');
+		textarea.id = replyId + 'textarea';
+		cell.appendChild(textarea);
+		textarea.value = content;
+		textarea.cols = 35;
+		isEditReplyMode = true;
+		button.value = '수정완료';		
+	} else {
+		var textarea = document.getElementById(replyId + 'textarea');
+		var content = textarea.value;
+		if (content == '') {
+			alert('댓글은 빈칸 안됨');
+			textarea.focus();
+			return false;
+		}
+		//cell.innerHTML = content;
+		isEditReplyMode = false;
+		button.value = '수정';
+		var element = document.createElement('input');
+		form.appendChild(element);
+		element.name = 'reply';
+		element.type = 'hidden';
+		element.value = content;
+		form.submit();
+	}
+	return false;
+}
 </script>
 </head>
 
@@ -104,60 +138,38 @@ function tryLogin(form, password) {
 	if(!(isset($_SESSION['board_id']))){
 		echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
 	}
-	$page = $_SESSION['page'];
-	echo "<input type=\"hidden\" value=\"$page\" name=\"page\">";
-	echo '<input style="float:right; margin-top:15px; margin-bottom:15px; background:#AFEEEE;color:#000;" type="submit" value="목록">';
+	if (isset($_SESSION['page'])){
+		$page = $_SESSION['page'];
+		echo "<input type=\"hidden\" value=\"$page\" name=\"page\">";
+	}
+	echo '<input class="view_list" type="submit" value="목록">';
 	echo '</form>';
 	if (isset($_SESSION['id'])){
 		if ($user_name === $_SESSION['id']){
 			echo '<form action = "modify.php" method = "get">';
-			echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
+			echo '<input class="view_modify" type="submit" value="수정">';
 			echo '</form>';
 			echo '<form action = "delete.php" method = "get">';
 			echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
-			echo '<input style="float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
+			echo '<input class="view_modify" type="submit" value="삭제">';
 			echo '</form>';
 		}
 	}	
 	//댓글 
 	echo '<table class="table_view">';
-	if (check_login()) {//수정댓글
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$reply_id = $_POST['reply_id'];
-			$reply = get_reply_from_id($reply_id);
-			$reply_time = convert_time_string ($reply->getReplyLastUpdate());
-			
-			echo '<form action="reply_modify.php" method="POST">';			
-			echo '<tr>';
-			echo '<th>댓글</th>';
-			echo '<td ><textarea type="text" name="reply" rows="3" cols="43%">'.$reply->getReplyComment().'</textarea></td>';
-			echo '<th>작성자</th>';
-			echo '<td style="width:13%";>'.htmlspecialchars(get_user_name($reply->getReplyUserID())).'</td>';
-			echo "<th>수정일</th>";
-			echo '<td style="width:16%";>'.$reply_time."</td>";
-			echo '</tr>';
-			echo '</table>';			
-			echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';			
-			echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="수정">';
-			echo '</form>';
-			echo '<form action = "view_db_post_fk.php" method = "GET">';
-			echo '<input type="hidden" value="'.$post->getId().'" name="post_id">';
-			echo '<input style="float:right; margin-top:3px; margin-right:6px; background:#AFEEEE;color:#000;" type="submit" value="취소">';
-			echo '</form>';
-			
-		} else {//메인 댓글
-			$my_id = $_SESSION['id'];
-			echo '<form action="reply_db_fk.php" method="POST">';		
-			echo '<tr>';
-			echo '<th>댓글</th>';
-			echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
-			echo '<th>작성자</th>';
-			echo '<td>'.$my_id.'</td>';
-			echo '</tr>';
-			echo '</table>';		
-			echo '<input style="float:right; margin-top:3px;background:#AFEEEE;color:#000;" type="submit" value="작성">';
-			echo '</form>';	
-		}
+	if (check_login()) {
+		//메인 댓글
+		$my_id = $_SESSION['id'];
+		echo '<form action="reply_db_fk.php" method="POST">';		
+		echo '<tr>';
+		echo '<th>댓글</th>';
+		echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
+		echo '<th>작성자</th>';
+		echo '<td>'.$my_id.'</td>';
+		echo '</tr>';
+		echo '</table>';		
+		echo '<input class="reply_modify" type="submit" value="작성">';
+		echo '</form>';	
 	} else {//로그인 안되있을때
 		echo '<form action="reply_db_fk.php" method="POST">';		
 		echo '<tr>';
@@ -177,7 +189,7 @@ function tryLogin(form, password) {
 		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
 		echo "<tr>";
 		echo "<th>내용</th>";
-		echo '<td style="width:39%";>'.htmlspecialchars($reply->getReplyComment())."</td>";
+		echo '<td style="width:39%" id="'.$reply->getReplyId().'">'.htmlspecialchars($reply->getReplyComment())."</td>";
 		echo "<th>작성자</th>";
 		echo '<td style="width:16%";>'.htmlspecialchars(get_user_name ($reply->getReplyUserID()))."</td>";
 		echo "<th>수정일</th>";
@@ -185,14 +197,15 @@ function tryLogin(form, password) {
 		echo '<td>';
 		if (isset($_SESSION['id'])){
 			if(get_user_name ($reply->getReplyUserID()) === $_SESSION['id']){
-				echo '<form action = "view_db_post_fk.php" method = "POST">';
+				echo '<form action = "reply_modify.php" method = "POST">';
 				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
 				echo '<input type="hidden" value="'.htmlspecialchars($post->getId()).'" name="post_id">';
-				echo '<input style="margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="수정">';
+				echo '<input class="view_reply_modify" type="button" value="수정" 
+				onClick="editReply(this, '.$reply->getReplyId().', this.form);">';
 				echo '</form>';
 				echo '<form action = "delete.php" method = "POST">';
 				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';			
-				echo '<input style="margin-top:5px; margin-left:6px; background:#AFEEEE;color:#000;" type="submit" value="삭제">';
+				echo '<input class="view_reply_del" type="submit" value="삭제">';
 				echo '</form>';		
 				echo '</td>';
 			}

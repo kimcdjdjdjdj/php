@@ -58,5 +58,19 @@ td {background:#E0FFFF; border:1px solid #000000; padding:10px;}
 	text-align:center;}	
 	
 .search {margin:0 auto; width:300px; margin-top:20px;}
+.paging {margin:0 auto; width:300px; margin-top:5px;}
+.write_btn {float:right; margin-top:15px; background:#AFEEEE; color:#000;}
+#main {margin-top:50px; margin-left:170px; background:#AFEEEE; color:#000;}
 
-
+.write_submit {float:right; margin-top:15px; margin-right:20px; background:#AFEEEE; 
+			color:#000;}
+			
+.view_list {float:right; margin-top:15px; margin-bottom:15px; background:#AFEEEE; 
+			color:#000;}
+.view_modify {float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;}
+.reply_modify {float:right; margin-top:3px; background:#AFEEEE; color:#000;}
+.reply_cen {float:right; margin-top:3px; margin-right:6px; background:#AFEEEE;
+			color:#000;}
+.view_reply_modify {margin-top:4px;margin-left:6px; background:#AFEEEE;color:#000;}
+.view_reply_del {margin-top:5px; margin-left:6px; background:#AFEEEE;color:#000;}
+.modify_post {float:right; margin-top:15px; margin-bottom:15px; margin-right:15px; background:#AFEEEE;color:#000;}
