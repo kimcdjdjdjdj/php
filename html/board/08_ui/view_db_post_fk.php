@@ -103,7 +103,7 @@ function showMoreReplies(button) {
 	currentDisplayedReplies = nextDisplayedReplies;
 	if (nextDisplayedReplies === numTotalReplies) {
 		button.style.display = 'none';
-	}
+	} 
 }
 </script>
 </head>
@@ -273,7 +273,11 @@ function showMoreReplies(button) {
 ?>
 </table>
 <input type="button" id="show_more_reply_button" class="view_list" value="댓글 더보기" onclick="showMoreReplies(this);"> </input><br><br>
-<script>showMoreReplies(document.getElementById('show_more_reply_button')); </script>
+<script>
+if (currentDisplayedReplies === 0){
+	showMoreReplies(document.getElementById('show_more_reply_button'));
+}
+</script>
 </div>
 
 </body>	
