@@ -68,6 +68,6 @@
 		}
 		mysqli_close($conn);
 		
-		$auto_complete_word = implode(' ', $words);
+		$auto_complete_word = json_encode($words);
 		return $auto_complete_word;
 	}

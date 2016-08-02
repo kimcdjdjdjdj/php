@@ -14,28 +14,29 @@ $(document).ready(function(){
 		minLength: 1,
 		search: function(){
 			$("#autocomplete-input").val();
-			$("#autocomplete-input").autocomplete('option', 'source', 
+			$("#autocomplete-input").autocomplete('option', 'source',
 			getAutocompleteSource($("#autocomplete-input").val()));
 		},
 		delay: 5
 	});
-	
+
 	function getAutocompleteSource(userInput) {
 		var source = '';
 		$.ajax({
 			url: 'autocomplete.php',
 			async: false,
 			data: {input: userInput},
+			dataType: 'json',
 			success: function(result){
-				//alert+(reset);
-				source = result;				
+				//alert(result);
+				source = result;
 			},
-			
+
 			error: function(xhr){
 				alert('Error');
 			}
 		});
-		return source.split(' ');
+		return source;
 	}
 });
 </script>

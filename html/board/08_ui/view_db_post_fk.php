@@ -2,10 +2,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <html>
-
 <head>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
-		<script language="javascript" src="sha512.js"></script>
+		<script language="javascript" src="js/sha512.js"></script>
+		<script language="javascript" src="js/jquery-1.11.2.js"></script>
 <script>
 function tryLogin(form, password) {
     var hash = document.createElement('input');
@@ -50,6 +50,60 @@ function editReply(button, replyId, form) {
 		form.submit();
 	}
 	return false;
+}
+
+function deleteRowById(table, rowId) {
+	for (var i = 0; i < table.rows.length; i++) {
+		if (table.rows[i].id === rowId) {
+			table.deleteRow(i);
+			return;
+		}
+	}
+	alert('deleteRowById not found');
+}
+
+function deleteReply(replyId) {
+	if (confirm('정말 삭제하겟습니까?')) {
+		ajaxDeleteReply(replyId);
+		var table = document.getElementById('table_re');
+		deleteRowById(table, 'reply_id' + replyId);
+	}	
+}
+
+function ajaxDeleteReply(replyId) {	
+	$.ajax({ 
+		url: 'ajax_delete_reply.php',
+		type: 'POST',
+		async: false,
+		data: { reply_id: replyId },
+		success: function(result) {
+		},
+		error: function(xhr) {
+			alert('ajaxDeleteReply');
+		},
+		timeout : 1000
+	});		
+}
+
+var currentDisplayedReplies = 0;
+var replyBlockSize = 3;
+function showMoreReplies(button) {
+	var table = document.getElementById('table_re');
+	var numTotalReplies = table.rows.length;
+	//alert(numTotalReplies);
+	var nextDisplayedReplies = Math.min(currentDisplayedReplies + replyBlockSize, numTotalReplies);
+	for (var rownum = 0; rownum < numTotalReplies; rownum++) {
+		var row = table.rows[rownum];
+		if (rownum < nextDisplayedReplies) {
+			row.style.display = '';
+		} else {
+			row.style.display = 'none';
+		}
+	}
+	currentDisplayedReplies = nextDisplayedReplies;
+	if (nextDisplayedReplies === numTotalReplies) {
+		button.style.display = 'none';
+	}
 }
 </script>
 </head>
@@ -183,10 +237,10 @@ function editReply(button, replyId, form) {
 	
 	$replys = get_all_reply($id);
 	//print_r ($replys);
-	echo '<table class="table_re">';
+	echo '<table id="table_re">';
 	foreach ($replys as $key => $reply) {			
 		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
-		echo "<tr>";
+		echo '<tr id="reply_id'.$reply->getReplyId().'">';
 		echo "<th>내용</th>";
 		echo '<td style="width:39%" id="'.$reply->getReplyId().'">'.htmlspecialchars($reply->getReplyComment())."</td>";
 		echo "<th>작성자</th>";
@@ -203,9 +257,9 @@ function editReply(button, replyId, form) {
 				echo '<input class="view_reply_modify" type="button" value="수정" 
 				onClick="editReply(this, '.$reply->getReplyId().', this.form);">';
 				echo '</form>';
-				echo '<form action = "delete.php" method = "POST">';
-				echo '<input type="hidden" value="'.$reply->getReplyId().'" name="reply_id">';
-				echo '<input class="view_reply_del" type="submit" value="삭제">';
+				echo '<form action = "view_db_post_fk.php" method = "POST">';	
+				echo '<input class="view_reply_del" type="button" value="삭제"
+				onClick="deleteReply('.$reply->getReplyId().');">';
 				echo '</form>';
 				echo '</td>';
 				echo "</tr>";
@@ -215,9 +269,11 @@ function editReply(button, replyId, form) {
 		} else {
 			echo "</tr>";
 		}
-	}
-	echo "</table>";
+	}	
 ?>
+</table>
+<input type="button" id="show_more_reply_button" class="view_list" value="댓글 더보기" onclick="showMoreReplies(this);"> </input><br><br>
+<script>showMoreReplies(document.getElementById('show_more_reply_button')); </script>
 </div>
 
 </body>	
