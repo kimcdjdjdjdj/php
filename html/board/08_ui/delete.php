@@ -25,11 +25,11 @@ function tryLogin(form, password) {
 	start_session();
 	
 	if (check_login()) {
-		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$check_name = $_SESSION['id'];
 			$user_name = $_GET['user_name'];
 			$post_id = $_SESSION['post_id'];
-			if ($user_name == $check_name) {
+			if ($user_name === $check_name) {
 				delete_post ($post_id);
 				header("location: index_db_fk.php");				
 			} else {

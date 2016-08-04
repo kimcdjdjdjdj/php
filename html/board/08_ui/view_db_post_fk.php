@@ -39,17 +39,27 @@ function editReply(button, replyId, form) {
 			textarea.focus();
 			return false;
 		}
-		//cell.innerHTML = content;
+		cell.innerHTML = content;
 		isEditReplyMode = false;
 		button.value = '수정';
-		var element = document.createElement('input');
-		form.appendChild(element);
-		element.name = 'reply';
-		element.type = 'hidden';
-		element.value = content;
-		form.submit();
+		ajaxEditReply(replyId, content);
 	}
 	return false;
+}
+
+function ajaxEditReply(replyId, content) {	
+	$.ajax({ 
+		url: 'reply_modify.php',
+		type: 'POST',
+		async: false,
+		data: { reply_id: replyId, reply: content },		
+		success: function(result) {
+		},
+		error: function(xhr) {
+			alert('ajaxEditReply');
+		},
+		timeout : 1000
+	});
 }
 
 function deleteRowById(table, rowId) {
@@ -70,7 +80,7 @@ function deleteReply(replyId) {
 	}	
 }
 
-function ajaxDeleteReply(replyId) {	
+function ajaxDeleteReply(replyId) {
 	$.ajax({ 
 		url: 'ajax_delete_reply.php',
 		type: 'POST',
@@ -82,7 +92,7 @@ function ajaxDeleteReply(replyId) {
 			alert('ajaxDeleteReply');
 		},
 		timeout : 1000
-	});		
+	});
 }
 
 var currentDisplayedReplies = 0;
@@ -92,6 +102,7 @@ function showMoreReplies(button) {
 	var numTotalReplies = table.rows.length;
 	//alert(numTotalReplies);
 	var nextDisplayedReplies = Math.min(currentDisplayedReplies + replyBlockSize, numTotalReplies);
+	//alert(nextDisplayedReplies);
 	for (var rownum = 0; rownum < numTotalReplies; rownum++) {
 		var row = table.rows[rownum];
 		if (rownum < nextDisplayedReplies) {
@@ -103,7 +114,7 @@ function showMoreReplies(button) {
 	currentDisplayedReplies = nextDisplayedReplies;
 	if (nextDisplayedReplies === numTotalReplies) {
 		button.style.display = 'none';
-	} 
+	}
 }
 </script>
 </head>
@@ -200,10 +211,10 @@ function showMoreReplies(button) {
 	echo '</form>';
 	if (isset($_SESSION['id'])){
 		if ($user_name === $_SESSION['id']){
-			echo '<form action = "modify.php" method = "get">';
+			echo '<form action = "modify.php" method = "post">';
 			echo '<input class="view_modify" type="submit" value="수정">';
 			echo '</form>';
-			echo '<form action = "delete.php" method = "get">';
+			echo '<form action = "delete.php" method = "post">';
 			echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
 			echo '<input class="view_modify" type="submit" value="삭제">';
 			echo '</form>';
@@ -257,7 +268,7 @@ function showMoreReplies(button) {
 				echo '<input class="view_reply_modify" type="button" value="수정" 
 				onClick="editReply(this, '.$reply->getReplyId().', this.form);">';
 				echo '</form>';
-				echo '<form action = "view_db_post_fk.php" method = "POST">';	
+				echo '<form action = "view_db_post_fk.php" method = "POST">';
 				echo '<input class="view_reply_del" type="button" value="삭제"
 				onClick="deleteReply('.$reply->getReplyId().');">';
 				echo '</form>';
