@@ -27,11 +27,13 @@ function tryLogin(form, password) {
 	if (check_login()) {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$check_name = $_SESSION['id'];
-			$user_name = $_GET['user_name'];
+			$user_name = $_POST['user_name'];
 			$post_id = $_SESSION['post_id'];
+			$board_id = $_POST['board_id'];
+			$page = $_POST['page'];
 			if ($user_name === $check_name) {
 				delete_post ($post_id);
-				header("location: index_db_fk.php");				
+				header("location: index_db_fk.php?board_id=$board_id&page=$page");				
 			} else {
 				header('Location: error.php?error_code=5');
 			}

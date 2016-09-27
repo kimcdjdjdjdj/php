@@ -29,7 +29,7 @@ function tryLogin(form, password) {
 
 
 
-function addReply(postId, author, textarea) {
+function addReply(postId, author, textarea) { //댓글 추가
 	//alert(textarea);
 	var content = textarea.value;
 	textarea.value = '';
@@ -38,29 +38,30 @@ function addReply(postId, author, textarea) {
 		return false;
 	}
 	//alert(content);
-	var reply = ajaxAddReply(postId, content);
+	var reply = ajaxReplyData(postId, content);
 	//alert(reply[1]);
-	var reply_id = reply[0];
+	var replyId = reply[0];
 	var last_update = reply[1];
 	var table = document.getElementById('table_re');
 	var row = table.insertRow(1);
-	row.id = reply_id;
+	row.id = 'reply_id' + replyId;
 	row.style.textAlign = "center";
 	row.innerHTML = document.getElementById('prototype').innerHTML;
 	row.children[0].innerHTML = htmlspecialchars(content);
+	row.children[0].id = replyId;
 	row.children[1].innerHTML = author;
 	row.children[2].innerHTML = last_update;
 	//row.children[2].children[0].onclick = function(i) { return function() { editReply(row.children[2].children[0], i); }} (reply_id);
 	row.children[3].children[0].className = "view_reply_modify";
-	row.children[3].children[0].onclick = function() { editReply(row.children[3].children[1], reply_id); }
+	row.children[3].children[0].onclick = function() { editReply(row.children[3].children[0], replyId); }
 	row.children[4].children[0].className = "view_reply_del";
-	row.children[4].children[0].onclick = function() { deleteReply(reply_id); }
+	row.children[4].children[0].onclick = function() { deleteReply(replyId); }
 }
 
-function ajaxAddReply(postId, content) {
+function ajaxReplyData(postId, content) { //댓글 데이터
 	var replyId = '';
 	$.ajax({ 
-		url: 'reply_db_fk.php',
+		url: 'ajaxReplyData.php',
 		type: 'POST',
 		async: false,
 		data: { post_id: postId, content: content },
@@ -70,7 +71,7 @@ function ajaxAddReply(postId, content) {
 			reply = result;
 		},
 		error: function(xhr) {
-			alert('ajaxEditReply');
+			alert('ajaxReplyData');
 		},
 		timeout : 1000
 	});	
@@ -78,7 +79,7 @@ function ajaxAddReply(postId, content) {
 }
 
 var isEditReplyMode = false;
-function editReply(button, replyId, form) {
+function editReply(button, replyId, form) { //댓글 수정 ajax 
 	var cell = document.getElementById(replyId);
 	if (isEditReplyMode == false) {
 		var content = cell.innerHTML;
@@ -108,7 +109,7 @@ function editReply(button, replyId, form) {
 
 function ajaxEditReply(replyId, content) {	
 	$.ajax({ 
-		url: 'reply_modify.php',
+		url: 'ajaxReplyModify.php',
 		type: 'POST',
 		async: false,
 		data: { reply_id: replyId, reply: content },		
@@ -121,7 +122,7 @@ function ajaxEditReply(replyId, content) {
 	});
 }
 
-function deleteRowById(table, rowId) {
+function deleteRowById(table, rowId) { //댓글 삭제
 	for (var i = 0; i < table.rows.length; i++) {
 		if (table.rows[i].id === rowId) {
 			table.deleteRow(i);
@@ -133,30 +134,30 @@ function deleteRowById(table, rowId) {
 
 function deleteReply(replyId) {
 	if (confirm('정말 삭제하겟습니까?')) {
-		ajaxDeleteReply(replyId);
+		ajaxReplyDelete(replyId);
 		var table = document.getElementById('table_re');
 		deleteRowById(table, 'reply_id' + replyId);
 	}	
 }
 
-function ajaxDeleteReply(replyId) {
+function ajaxReplyDelete(replyId) {
 	$.ajax({ 
-		url: 'ajax_delete_reply.php',
+		url: 'ajaxReplyDelete.php',
 		type: 'POST',
 		async: false,
-		data: { reply_id: replyId },
+		data: { reply_id : replyId },
 		success: function(result) {
 		},
 		error: function(xhr) {
-			alert('ajaxDeleteReply');
+			alert('ajaxReplyDelete');
 		},
 		timeout : 1000
 	});
 }
 
-var currentDisplayedReplies = 0;
+var currentDisplayedReplies = 0;  
 var replyBlockSize = 4;
-function showMoreReplies(button) {
+function showMoreReplies(button) { //댓글 펼치기
 	var table = document.getElementById('table_re');
 	var numTotalReplies = table.rows.length;
 	//alert(numTotalReplies);
@@ -261,13 +262,11 @@ function showMoreReplies(button) {
 	echo '</tr>';
 	echo '</table>';
 	echo '<form action = "index_db_fk.php" method = "get">';
-	if(!(isset($_SESSION['board_id']))){
-		echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
-	}
-	if (isset($_SESSION['page'])){
+	echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
+	if (isset($_SESSION['page'])) {
 		$page = $_SESSION['page'];
 		echo "<input type=\"hidden\" value=\"$page\" name=\"page\">";
-	}
+	}	
 	echo '<input class="view_list" type="submit" value="목록">';
 	echo '</form>';
 	if (isset($_SESSION['id'])){
@@ -277,6 +276,11 @@ function showMoreReplies(button) {
 			echo '</form>';
 			echo '<form action = "delete.php" method = "post">';
 			echo "<input type=\"hidden\" value=\"$user_name\" name=\"user_name\">";
+			echo "<input type=\"hidden\" value=\"$board_id\" name=\"board_id\">";
+			if (isset($_SESSION['page'])) {
+				$page = $_SESSION['page'];
+				echo "<input type=\"hidden\" value=\"$page\" name=\"page\">";
+			}
 			echo '<input class="view_modify" type="submit" value="삭제">';
 			echo '</form>';
 		}
@@ -315,8 +319,8 @@ function showMoreReplies(button) {
 	<td width="39%">reply_content</td>
 	<td width="16%">reply_author</td>
 	<td width="16%">reply_time</td>
-		<td><input class="view_reply_modify" type="button" value="수정" style="width: 70px;"> </input></td>
-		<td><input class="view_reply_del" type="button" value="삭제" style="width: 70px;"> </input></td>
+	<td><input class="view_reply_modify" type="button" value="수정" > </input></td>
+	<td><input class="view_reply_del" type="button" value="삭제" > </input></td>
 	</tr>
 	<table>
 <?php
