@@ -1,10 +1,19 @@
+<?php
+	require_once '../../../includes/session.php';	
+	require_once '../../../includes/post.php';
+	start_session();
+?>
+
+
+
 <!DOCTYPE html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">		
 		<script language="javascript" src="js/sha512.js"></script>
+		<script language="javascript" src="js/check_form.js"></script>
 		<script language="javascript" src="js/jquery-1.11.2.js"></script>
 <script>
 function tryLogin(form, password) {
@@ -16,6 +25,56 @@ function tryLogin(form, password) {
     password.value = '';
 	form.submit();
 	return true;
+}
+
+
+
+function addReply(postId, author, textarea) {
+	//alert(textarea);
+	var content = textarea.value;
+	textarea.value = '';
+	if (content === '') {
+		alert('댓글 빈칸안됨');
+		return false;
+	}
+	//alert(content);
+	var reply = ajaxAddReply(postId, content);
+	//alert(reply[1]);
+	var reply_id = reply[0];
+	var last_update = reply[1];
+	var table = document.getElementById('table_re');
+	var row = table.insertRow(1);
+	row.id = reply_id;
+	row.style.textAlign = "center";
+	row.innerHTML = document.getElementById('prototype').innerHTML;
+	row.children[0].innerHTML = htmlspecialchars(content);
+	row.children[1].innerHTML = author;
+	row.children[2].innerHTML = last_update;
+	//row.children[2].children[0].onclick = function(i) { return function() { editReply(row.children[2].children[0], i); }} (reply_id);
+	row.children[3].children[0].className = "view_reply_modify";
+	row.children[3].children[0].onclick = function() { editReply(row.children[3].children[1], reply_id); }
+	row.children[4].children[0].className = "view_reply_del";
+	row.children[4].children[0].onclick = function() { deleteReply(reply_id); }
+}
+
+function ajaxAddReply(postId, content) {
+	var replyId = '';
+	$.ajax({ 
+		url: 'reply_db_fk.php',
+		type: 'POST',
+		async: false,
+		data: { post_id: postId, content: content },
+		dataType: 'json',
+		success: function(result) {
+			//alert('result' + result);
+			reply = result;
+		},
+		error: function(xhr) {
+			alert('ajaxEditReply');
+		},
+		timeout : 1000
+	});	
+	return reply;
 }
 
 var isEditReplyMode = false;
@@ -96,7 +155,7 @@ function ajaxDeleteReply(replyId) {
 }
 
 var currentDisplayedReplies = 0;
-var replyBlockSize = 3;
+var replyBlockSize = 4;
 function showMoreReplies(button) {
 	var table = document.getElementById('table_re');
 	var numTotalReplies = table.rows.length;
@@ -116,6 +175,9 @@ function showMoreReplies(button) {
 		button.style.display = 'none';
 	}
 }
+
+
+
 </script>
 </head>
 
@@ -125,8 +187,7 @@ function showMoreReplies(button) {
 
 <h1 id="name">나의 게시판</h1>
 <?php		
-	require_once '../../../includes/session.php';
-	start_session();
+	
 	
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$_SESSION['post_id'] = $_GET['post_id'];
@@ -178,7 +239,7 @@ function showMoreReplies(button) {
 <?php
 	}
 	echo '<div class="wrap_view">';
-	require_once '../../../includes/post.php';
+	
 	$post = get_post_from_id($id);
 	$time = convert_time_string ($post->getCreated());
 	$num = $post->getId();
@@ -225,38 +286,52 @@ function showMoreReplies(button) {
 	if (check_login()) {
 		//메인 댓글
 		$my_id = $_SESSION['id'];
-		echo '<form action="reply_db_fk.php" method="POST">';		
-		echo '<tr>';
-		echo '<th>댓글</th>';
-		echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
-		echo '<th>작성자</th>';
-		echo '<td>'.$my_id.'</td>';
-		echo '</tr>';
-		echo '</table>';
-		echo '<input class="reply_modify" type="submit" value="작성">';
-		echo '</form>';	
+?>	
+		<form>	
+		<tr>
+		<th>댓글</th>
+		<td><textarea type="text" name="reply" rows="3" cols="50%" placeholder="댓글내용을 여기에 입력하세요"></textarea></td>
+		<th>작성자</th>
+		<td><?php echo $my_id; ?></td>
+		</tr>
+		</table>
+		<input class="reply_modify" type="button" value="작성" 
+		onclick="addReply(<?php echo $id; ?>, '<?php echo $my_id; ?>', this.form.reply)"></input>
+		</form>
+<?php		
 	} else {//로그인 안되있을때
 		echo '<form action="reply_db_fk.php" method="POST">';		
 		echo '<tr>';
 		echo '<th>댓글</th>';
-		echo '<td><textarea type="text" name="reply" rows="3" cols="50%"></textarea></td>';
+		echo '<td><textarea type="text" name="reply" rows="3" cols="50%" placeholder="댓글내용을 여기에 입력하세요"></textarea></td>';
 		echo '<th>작성자</th>';
 		echo '<td>로그인 하십시오</td>';
 		echo '</tr>';
 		echo '</table>';
 	}
-	
+?>
+	<table style="display: none;">
+	<tr id="prototype" style="text-align:center;">
+	<td width="39%">reply_content</td>
+	<td width="16%">reply_author</td>
+	<td width="16%">reply_time</td>
+		<td><input class="view_reply_modify" type="button" value="수정" style="width: 70px;"> </input></td>
+		<td><input class="view_reply_del" type="button" value="삭제" style="width: 70px;"> </input></td>
+	</tr>
+	<table>
+<?php
 	$replys = get_all_reply($id);
 	//print_r ($replys);
 	echo '<table id="table_re">';
+	echo '<th>내용</th><th>작성자</th><th>수정일</th><th colspan="2">수정/삭제</th>';	
 	foreach ($replys as $key => $reply) {			
 		$reply_time = convert_time_string ($reply->getReplyLastUpdate());
-		echo '<tr id="reply_id'.$reply->getReplyId().'">';
-		echo "<th>내용</th>";
+		echo '<tr id="reply_id'.$reply->getReplyId().'" style="text-align:center";>';
+		
 		echo '<td style="width:39%" id="'.$reply->getReplyId().'">'.htmlspecialchars($reply->getReplyComment())."</td>";
-		echo "<th>작성자</th>";
+		
 		echo '<td style="width:16%";>'.htmlspecialchars(get_user_name ($reply->getReplyUserID()))."</td>";
-		echo "<th>수정일</th>";
+		
 		echo '<td style="width:16%";>'.$reply_time."</td>";
 		
 		if (isset($_SESSION['id'])){
@@ -268,26 +343,30 @@ function showMoreReplies(button) {
 				echo '<input class="view_reply_modify" type="button" value="수정" 
 				onClick="editReply(this, '.$reply->getReplyId().', this.form);">';
 				echo '</form>';
+				echo '</td>';
+				echo '<td>';
 				echo '<form action = "view_db_post_fk.php" method = "POST">';
 				echo '<input class="view_reply_del" type="button" value="삭제"
 				onClick="deleteReply('.$reply->getReplyId().');">';
 				echo '</form>';
 				echo '</td>';
 				echo "</tr>";
-			} else{
+			} else if (get_user_name ($reply->getReplyUserID()) !== $_SESSION['id']) {
+				echo '<td colspan="2">권한이 없습니다..</td>';
 				echo "</tr>";
 			}
 		} else {
+			echo '<td colspan="2">로그인이 필요합니다.</td>';
 			echo "</tr>";
 		}
-	}	
+	}
 ?>
 </table>
 <input type="button" id="show_more_reply_button" class="view_list" value="댓글 더보기" onclick="showMoreReplies(this);"> </input><br><br>
 <script>
-if (currentDisplayedReplies === 0){
+
 	showMoreReplies(document.getElementById('show_more_reply_button'));
-}
+
 </script>
 </div>
 

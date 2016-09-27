@@ -47,6 +47,8 @@ td {background:#E0FFFF; border:1px solid #000000; padding:10px;}
 	color:#000;}
 
 #table_re {width:100%; border:1px solid #000000; 
+	border-collapse:collapse;margin-top:100px;}
+#prototype {width:100%; border:1px solid #000000; 
 	border-collapse:collapse;margin-top:100px;}	
 
 .test_btn2 {margin-left:239px; margin-top:15px; background:#AFEEEE; color:#000;}

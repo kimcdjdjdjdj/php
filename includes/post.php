@@ -14,7 +14,7 @@
 	
 	function get_all_post ($board_id) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$select_query = sprintf("SELECT post_id, title, user_id, comment, last_update, board_id FROM kimjongchan.post WHERE board_id = %d;", $board_id);
+		$select_query = sprintf("SELECT post_id, title, user_id, comment, last_update, board_id FROM kimjongchan.post WHERE board_id = %d; ", $board_id);
 		$result = mysqli_query ($conn, $select_query);
 		$post = array();
 		while ($row = mysqli_fetch_assoc($result)) {
@@ -64,14 +64,33 @@
 	}
 	
 	function reply_post ($reply) {
+		$id = $reply->getReplyUserID();
+		$comment = $reply->getReplyComment();
+		$post_id = $reply->getPostId();
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
 		$reply_query = 'INSERT INTO reply (user_id, reply_comment, post_id) VALUES (?, ?, ?)';
 		$stmt = mysqli_prepare($conn, $reply_query);
-		mysqli_stmt_bind_param($stmt, 'ssi', $reply->getReplyUserID(), $reply->getReplyComment(), $reply->getPostId());
+		mysqli_stmt_bind_param($stmt, 'ssi', $id, $comment, $post_id);
 		if (!mysqli_stmt_execute($stmt)) {
 			die('add_post query failure');
 		}
-		mysqli_close($conn);
+		
+		$reply = array();
+		$query = 'SELECT LAST_INSERT_ID() AS reply_id;';
+		$result = mysqli_query($conn, $query);
+		$row = mysqli_fetch_assoc($result);
+		$reply_id = $row['reply_id'];
+		$reply[0] = $reply_id;
+		
+		$array_query = sprintf("SELECT reply_last_update FROM reply WHERE reply_id=%d;", $reply_id);
+		$result2 = mysqli_query($conn, $array_query);
+		$row = mysqli_fetch_assoc($result2);
+		$reply_last_update = $row['reply_last_update'];
+		$reply[1] = $reply_last_update;
+		
+		mysqli_close($conn);		
+		
+		return $reply;
 	}
 	
 	function get_reply_from_id ($id) {
@@ -86,7 +105,7 @@
 	
 	function get_all_reply ($post_id) {
 		$conn = get_connection('kocia.cytzyor3ndjk.ap-northeast-2.rds.amazonaws.com', 'kimjongchan', 'password', 'kimjongchan');
-		$reply_query = sprintf("SELECT * FROM kimjongchan.reply WHERE post_id = %d;", $post_id);
+		$reply_query = sprintf("SELECT * FROM kimjongchan.reply WHERE post_id = %d ORDER BY reply_id DESC;", $post_id);
 		$result = mysqli_query ($conn, $reply_query);
 		$reply = array();
 		while ($row = mysqli_fetch_assoc($result)) {
