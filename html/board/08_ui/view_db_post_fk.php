@@ -356,7 +356,7 @@ function showMoreReplies(button) { //댓글 펼치기
 				echo '</td>';
 				echo "</tr>";
 			} else if (get_user_name ($reply->getReplyUserID()) !== $_SESSION['id']) {
-				echo '<td colspan="2">권한이 없습니다..</td>';
+				echo '<td colspan="2">권한이 없습니다.</td>';
 				echo "</tr>";
 			}
 		} else {
